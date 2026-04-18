@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../orm/generated/prisma"
@@ -12,8 +7,169 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+// ─── Better Auth Tables ─────────────────────────────────────────────
+
+model user {
+  id            String    @id @default(cuid())
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  sessions      session[]
+  accounts      account[]
+
+  practiceLogs    PracticeLog[]
+  repetitionItems RepetitionItem[]
+  dailyCheckIns   DailyCheckIn[]
+}
+
+model session {
+  id        String   @id @default(cuid())
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+
+  user user @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model account {
+  id                    String    @id @default(cuid())
+  accountId             String
+  providerId            String
+  userId                String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  user user @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// ─── App Enums ──────────────────────────────────────────────────────
+
+enum Difficulty {
+  EASY
+  MEDIUM
+}
+
+enum SolveResult {
+  YES
+  NO
+  PARTIAL
+}
+
+enum Confidence {
+  RED
+  YELLOW
+  GREEN
+}
+
+enum RepetitionStatus {
+  ACTIVE
+  CLEARED
+}
+
+// ─── App Models ─────────────────────────────────────────────────────
+
+model Pattern {
+  id              String   @id @default(cuid())
+  number          Int      @unique
+  name            String
+  description     String
+  recognitionCues String
+  template        String
+  flowchartHint   String?
+
+  problems Problem[]
+}
+
+model Problem {
+  id             String     @id @default(cuid())
+  leetcodeNumber Int
+  title          String
+  difficulty     Difficulty
+  url            String
+  patternId      String
+  isStarred      Boolean    @default(false)
+  dayInPlan      Int?
+  weekInPlan     Int?
+
+  pattern         Pattern          @relation(fields: [patternId], references: [id])
+  practiceLogs    PracticeLog[]
+  repetitionItems RepetitionItem[]
+}
+
+model PracticeLog {
+  id          String      @id @default(cuid())
+  userId      String
+  problemId   String
+  day         Int?
+  date        DateTime    @default(now())
+  timeTaken   Int?
+  timeLimit   Int?
+  solved      SolveResult @default(NO)
+  confidence  Confidence  @default(RED)
+  patternUsed String?
+  trippedUp   String?
+  keyInsight  String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  user    user    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem Problem @relation(fields: [problemId], references: [id])
+}
+
+model RepetitionItem {
+  id               String           @id @default(cuid())
+  userId           String
+  problemId        String
+  firstAttemptDate DateTime
+  firstResult      Confidence
+  resolveDate      DateTime?
+  resolveResult    Confidence?
+  status           RepetitionStatus @default(ACTIVE)
+  clearedDate      DateTime?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  user    user    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  problem Problem @relation(fields: [problemId], references: [id])
+}
+
+model DailyCheckIn {
+  id         String   @id @default(cuid())
+  userId     String
+  date       DateTime @default(now())
+  block1Done Boolean  @default(false)
+  block2Done Boolean  @default(false)
+  block3Done Boolean  @default(false)
+  block4Done Boolean  @default(false)
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user user @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
 }
