@@ -5,14 +5,20 @@ import { useRouter } from "next/navigation";
 import { LogOut, User, Flame } from "lucide-react";
 
 import { signOut, useSession } from "@/lib/auth-client";
+import { toast } from "sonner";
 
 export default function Header() {
   const { data: session } = useSession();
   const router = useRouter();
 
   const handleLogout = async () => {
-    await signOut();
-    router.push("/");
+    try {
+      await signOut();
+      router.push("/");
+      toast.success("Logged out successfully.");
+    } catch {
+      toast.error("Failed to log out.");
+    }
   };
 
   return (

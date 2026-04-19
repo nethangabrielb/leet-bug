@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "sonner";
 
 import { signUp } from "@/lib/auth-client";
 import { Zap, Mail, Lock, User, ArrowRight } from "lucide-react";
@@ -23,12 +24,16 @@ export default function RegisterPage() {
     try {
       const result = await signUp.email({ email, password, name });
       if (result.error) {
-        setError(result.error.message || "Registration failed");
+        const msg = result.error.message || "Registration failed";
+        setError(msg);
+        toast.error(msg);
       } else {
+        toast.success("Account created successfully! Welcome to LeetBug.");
         router.push("/dashboard");
       }
     } catch {
       setError("An unexpected error occurred");
+      toast.error("An unexpected error occurred");
     } finally {
       setLoading(false);
     }

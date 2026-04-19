@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "sonner";
 
 import { signIn } from "@/lib/auth-client";
 import { Zap, Mail, Lock, ArrowRight } from "lucide-react";
@@ -22,12 +23,16 @@ export default function LoginPage() {
     try {
       const result = await signIn.email({ email, password });
       if (result.error) {
-        setError(result.error.message || "Invalid email or password");
+        const msg = result.error.message || "Invalid email or password";
+        setError(msg);
+        toast.error(msg);
       } else {
+        toast.success("Welcome back!");
         router.push("/dashboard");
       }
     } catch {
       setError("An unexpected error occurred");
+      toast.error("An unexpected error occurred");
     } finally {
       setLoading(false);
     }

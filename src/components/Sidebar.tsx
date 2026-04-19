@@ -52,11 +52,8 @@ export default function Sidebar() {
           {!collapsed && (
             <div className="animate-fade-in overflow-hidden">
               <h1 className="text-sm font-bold tracking-tight text-white">
-                LeetCode
+                LeetBug
               </h1>
-              <p className="text-[10px] font-medium uppercase tracking-widest text-violet-400">
-                Tracker
-              </p>
             </div>
           )}
         </div>

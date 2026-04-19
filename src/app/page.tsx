@@ -36,7 +36,7 @@ export default function Home() {
             <div className="p-2 bg-linear-to-br from-indigo-500 to-cyan-400 rounded-xl">
               <Brain className="w-6 h-6 text-white" />
             </div>
-            <span className="text-xl font-bold tracking-tight">LeetCode Tracker</span>
+            <span className="text-xl font-bold tracking-tight">LeetBug</span>
           </div>
 
           <div className="flex items-center gap-4">

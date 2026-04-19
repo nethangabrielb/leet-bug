@@ -18,7 +18,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "LeetCode Tracker — Master Patterns, Ace Interviews",
+  title: "LeetBug — Master Patterns, Ace Interviews",
   description:
     "A premium, interactive LeetCode training system. Track your progress through 10 core patterns, 31-day plan, spaced repetition, and daily practice logs.",
 };

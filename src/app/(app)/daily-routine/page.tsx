@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 import {
   Sun,
@@ -135,7 +136,12 @@ export default function DailyRoutinePage() {
   const toggleBlock = async (key: keyof typeof checkIn) => {
     const updated = { ...checkIn, [key]: !checkIn[key] };
     setCheckIn(updated);
-    await checkInDaily(updated);
+    try {
+      await checkInDaily(updated);
+    } catch {
+      toast.error("Failed to save check-in state.");
+      // optionally revert state here but error handles it
+    }
   };
 
   const completedBlocks = Object.values(checkIn).filter(Boolean).length;
