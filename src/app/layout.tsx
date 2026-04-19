@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 import { Inter, JetBrains_Mono } from "next/font/google";
-
+import NextTopLoader from 'nextjs-toploader';
 import QueryProvider from "@/providers/query-provider";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -34,6 +34,7 @@ export default function RootLayout({
         className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
         <QueryProvider>
+          <NextTopLoader />
           {children}
           <Toaster />
         </QueryProvider>
