@@ -1,7 +1,10 @@
-import dynamic from "next/dynamic";
-
-const PatternsClient = dynamic(() => import("./PatternsClient"), { ssr: false });
+import PatternsClient from "./PatternsClient";
+import ClientOnly from "@/components/ClientOnly";
 
 export default function PatternsPage() {
-  return <PatternsClient />;
+  return (
+    <ClientOnly>
+      <PatternsClient />
+    </ClientOnly>
+  );
 }

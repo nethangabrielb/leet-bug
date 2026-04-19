@@ -1,7 +1,10 @@
-import dynamic from "next/dynamic";
-
-const PracticeLogClient = dynamic(() => import("./PracticeLogClient"), { ssr: false });
+import PracticeLogClient from "./PracticeLogClient";
+import ClientOnly from "@/components/ClientOnly";
 
 export default function PracticeLogPage() {
-  return <PracticeLogClient />;
+  return (
+    <ClientOnly>
+      <PracticeLogClient />
+    </ClientOnly>
+  );
 }

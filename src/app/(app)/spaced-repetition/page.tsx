@@ -1,7 +1,10 @@
-import dynamic from "next/dynamic";
-
-const SpacedRepetitionClient = dynamic(() => import("./SpacedRepetitionClient"), { ssr: false });
+import SpacedRepetitionClient from "./SpacedRepetitionClient";
+import ClientOnly from "@/components/ClientOnly";
 
 export default function SpacedRepetitionPage() {
-  return <SpacedRepetitionClient />;
+  return (
+    <ClientOnly>
+      <SpacedRepetitionClient />
+    </ClientOnly>
+  );
 }

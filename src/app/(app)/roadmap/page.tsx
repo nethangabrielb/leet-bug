@@ -1,7 +1,10 @@
-import dynamic from "next/dynamic";
-
-const RoadmapClient = dynamic(() => import("./RoadmapClient"), { ssr: false });
+import RoadmapClient from "./RoadmapClient";
+import ClientOnly from "@/components/ClientOnly";
 
 export default function RoadmapPage() {
-  return <RoadmapClient />;
+  return (
+    <ClientOnly>
+      <RoadmapClient />
+    </ClientOnly>
+  );
 }
