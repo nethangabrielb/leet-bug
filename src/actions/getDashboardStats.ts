@@ -69,8 +69,6 @@ export async function getDashboardStats() {
     patternStatsPromise,
   ]);
 
-  const uniqueDays = new Set(logs.map((l) => l.day).filter(Boolean));
-  const daysCompleted = uniqueDays.size;
 
   // Confidence breakdown
   const confidenceCounts = { RED: 0, YELLOW: 0, GREEN: 0 };
