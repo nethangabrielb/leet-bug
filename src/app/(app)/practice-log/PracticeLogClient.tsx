@@ -1,5 +1,8 @@
 "use client";
 
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getPracticeLogs, getAllProblemsWithPatterns } from "@/actions/getProblems";
+
 import { useState } from "react";
 import { Plus, ChevronDown, ChevronUp, Filter } from "lucide-react";
 
@@ -41,7 +44,16 @@ interface Props {
   problems: Problem[];
 }
 
-export default function PracticeLogClient({ logs, problems }: Props) {
+export default function PracticeLogClient() {
+  const { data: logs } = useSuspenseQuery({
+    queryKey: ["practiceLogs"],
+    queryFn: () => getPracticeLogs(),
+  });
+  
+  const { data: problems } = useSuspenseQuery({
+    queryKey: ["allProblems"],
+    queryFn: () => getAllProblemsWithPatterns(),
+  });
   const [showModal, setShowModal] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [filterConfidence, setFilterConfidence] = useState<string>("ALL");

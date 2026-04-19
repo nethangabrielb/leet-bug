@@ -1,5 +1,9 @@
 "use client";
 
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getActiveRepetitions, getClearedRepetitions } from "@/actions/manageRepetition";
+import { getAllProblemsWithPatterns } from "@/actions/getProblems";
+
 import { useState } from "react";
 import { Clock, Trophy, Play, ExternalLink } from "lucide-react";
 import Link from "next/link";
@@ -35,13 +39,22 @@ type ProblemItem = {
   pattern: { name: string };
 };
 
-interface Props {
-  active: RepItem[];
-  cleared: RepItem[];
-  problems: ProblemItem[];
-}
+export default function SpacedRepetitionClient() {
+  const { data: active } = useSuspenseQuery({
+    queryKey: ["activeRepetitions"],
+    queryFn: () => getActiveRepetitions(),
+  });
+  
+  const { data: cleared } = useSuspenseQuery({
+    queryKey: ["clearedRepetitions"],
+    queryFn: () => getClearedRepetitions(),
+  });
+  
+  const { data: problems } = useSuspenseQuery({
+    queryKey: ["allProblems"],
+    queryFn: () => getAllProblemsWithPatterns(),
+  });
 
-export default function SpacedRepetitionClient({ active, cleared }: Props) {
   const [tab, setTab] = useState<"active" | "cleared">("active");
   const [solvingItem, setSolvingItem] = useState<RepItem | null>(null);
   const now = new Date();

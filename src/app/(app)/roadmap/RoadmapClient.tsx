@@ -1,5 +1,8 @@
 "use client";
 
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getProblems } from "@/actions/getProblems";
+
 import { useState } from "react";
 import Link from "next/link";
 
@@ -46,7 +49,12 @@ const weekMeta = [
 const reviewDays = [7, 14, 21, 28];
 const bossDays = [29, 30, 31];
 
-export default function RoadmapClient({ problems }: RoadmapClientProps) {
+export default function RoadmapClient() {
+  const { data: problems } = useSuspenseQuery({
+    queryKey: ["roadmapProblems"],
+    queryFn: () => getProblems(),
+  });
+
   const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
 
   // Group problems by day

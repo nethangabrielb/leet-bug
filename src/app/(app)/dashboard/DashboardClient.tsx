@@ -1,5 +1,8 @@
 "use client";
 
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getDashboardStats } from "@/actions/getDashboardStats";
+
 import Link from "next/link";
 
 import {
@@ -44,7 +47,11 @@ interface DashboardStats {
   totalLogs: number;
 }
 
-export default function DashboardClient({ stats }: { stats: DashboardStats }) {
+export default function DashboardClient() {
+  const { data: stats } = useSuspenseQuery({
+    queryKey: ["dashboardStats"],
+    queryFn: () => getDashboardStats(),
+  });
   const progress = Math.round((stats.daysCompleted / stats.totalDays) * 100);
   const totalConfidence =
     stats.confidenceCounts.RED +
