@@ -1,7 +1,8 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 import { getActiveRepetitions, getClearedRepetitions } from "@/actions/manageRepetition";
 import { getAllProblemsWithPatterns } from "@/actions/getProblems";
 
@@ -41,6 +42,7 @@ type ProblemItem = {
 };
 
 export default function SpacedRepetitionClient() {
+  const queryClient = useQueryClient();
   const { data: active, isLoading: isLoadingActive, error: errorActive } = useQuery({
     queryKey: ["activeRepetitions"],
     queryFn: () => getActiveRepetitions(),
@@ -69,9 +71,14 @@ export default function SpacedRepetitionClient() {
   const now = new Date();
 
   const handleResult = async (repId: string, result: "RED" | "YELLOW" | "GREEN") => {
-    await updateRepetitionResult({ repetitionId: repId, result });
-    setSolvingItem(null);
-    window.location.reload();
+    try {
+      await updateRepetitionResult({ repetitionId: repId, result });
+      setSolvingItem(null);
+      toast.success(result === "GREEN" ? "Awesome! Pattern cleared. 🎉" : "Progress recorded. Keep at it! 💪");
+      await queryClient.invalidateQueries();
+    } catch {
+      toast.error("Failed to save your progress.");
+    }
   };
 
   const getDaysUntil = (date: Date | string | null) => {

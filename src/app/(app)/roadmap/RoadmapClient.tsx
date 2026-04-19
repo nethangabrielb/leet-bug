@@ -1,7 +1,8 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 import { getProblems } from "@/actions/getProblems";
 
 import { useState } from "react";
@@ -51,6 +52,7 @@ const reviewDays = [7, 14, 21, 28];
 const bossDays = [29, 30, 31];
 
 export default function RoadmapClient() {
+  const queryClient = useQueryClient();
   const { data: problems, isLoading, error } = useQuery({
     queryKey: ["roadmapProblems"],
     queryFn: () => getProblems(),
@@ -81,19 +83,24 @@ export default function RoadmapClient() {
   }
 
   const handleLogSubmit = async (data: LogFormData) => {
-    await logPractice({
-      problemId: data.problemId,
-      day: data.day,
-      timeTaken: data.timeTaken,
-      timeLimit: data.timeLimit,
-      solved: data.solved,
-      confidence: data.confidence,
-      patternUsed: data.patternUsed,
-      trippedUp: data.trippedUp,
-      keyInsight: data.keyInsight,
-    });
-    setSelectedProblem(null);
-    window.location.reload();
+    try {
+      await logPractice({
+        problemId: data.problemId,
+        day: data.day,
+        timeTaken: data.timeTaken,
+        timeLimit: data.timeLimit,
+        solved: data.solved,
+        confidence: data.confidence,
+        patternUsed: data.patternUsed,
+        trippedUp: data.trippedUp,
+        keyInsight: data.keyInsight,
+      });
+      setSelectedProblem(null);
+      toast.success("Progress saved! Great job. 🌟");
+      await queryClient.invalidateQueries();
+    } catch {
+      toast.error("Failed to save progress.");
+    }
   };
 
   return (

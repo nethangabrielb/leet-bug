@@ -1,7 +1,8 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
+import { toast } from "sonner";
 import { getPracticeLogs, getAllProblemsWithPatterns } from "@/actions/getProblems";
 
 import { useState } from "react";
@@ -46,6 +47,7 @@ interface Props {
 }
 
 export default function PracticeLogClient() {
+  const queryClient = useQueryClient();
   const { data: logs, isLoading: isLoadingLogs, error: errorLogs } = useQuery({
     queryKey: ["practiceLogs"],
     queryFn: () => getPracticeLogs(),
@@ -70,19 +72,24 @@ export default function PracticeLogClient() {
   const filtered = filterConfidence === "ALL" ? logs : logs.filter((l) => l.confidence === filterConfidence);
 
   const handleSubmit = async (data: LogFormData) => {
-    await logPractice({
-      problemId: data.problemId,
-      day: data.day,
-      timeTaken: data.timeTaken,
-      timeLimit: data.timeLimit,
-      solved: data.solved,
-      confidence: data.confidence,
-      patternUsed: data.patternUsed,
-      trippedUp: data.trippedUp,
-      keyInsight: data.keyInsight,
-    });
-    setShowModal(false);
-    window.location.reload();
+    try {
+      await logPractice({
+        problemId: data.problemId,
+        day: data.day,
+        timeTaken: data.timeTaken,
+        timeLimit: data.timeLimit,
+        solved: data.solved,
+        confidence: data.confidence,
+        patternUsed: data.patternUsed,
+        trippedUp: data.trippedUp,
+        keyInsight: data.keyInsight,
+      });
+      setShowModal(false);
+      toast.success("Practice session logged! 🚀");
+      await queryClient.invalidateQueries();
+    } catch {
+      toast.error("Failed to log practice session.");
+    }
   };
 
   return (
