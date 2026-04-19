@@ -34,7 +34,19 @@ export default function RootLayout({
         className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased`}
       >
         <QueryProvider>
-          <NextTopLoader />
+          <NextTopLoader
+            color="#10b981"
+            initialPosition={0.08}
+            crawlSpeed={200}
+            height={3}
+            crawl={true}
+            showSpinner={false}
+            easing="ease"
+            speed={200}
+            shadow="0 0 10px #10b981,0 0 5px #10b981"
+            zIndex={1600}
+            showAtBottom={false}
+          />
           {children}
           <Toaster />
         </QueryProvider>
