@@ -14,12 +14,54 @@ export async function getDashboardStats() {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-  // Days completed (unique days logged)
-  const logs = await prisma.practiceLog.findMany({
+  // Fire independent queries concurrently
+  const logsPromise = prisma.practiceLog.findMany({
     where: { userId },
     select: { day: true, date: true, confidence: true, problemId: true },
     orderBy: { date: "desc" },
   });
+
+  const dueTodayPromise = prisma.repetitionItem.count({
+    where: {
+      userId,
+      status: "ACTIVE",
+      resolveDate: { lte: new Date(today.getTime() + 86400000) },
+    },
+  });
+
+  const dayOfWeek = now.getDay();
+  const weekStart = new Date(today);
+  weekStart.setDate(weekStart.getDate() - dayOfWeek);
+
+  const weekLogsPromise = prisma.practiceLog.count({
+    where: {
+      userId,
+      date: { gte: weekStart },
+    },
+  });
+
+  const patternStatsPromise = prisma.pattern.findMany({
+    include: {
+      problems: {
+        include: {
+          practiceLogs: {
+            where: { userId },
+            orderBy: { date: "desc" },
+            take: 1,
+          },
+        },
+      },
+    },
+    orderBy: { number: "asc" },
+  });
+
+  // Await all parallel promises
+  const [logs, dueToday, weekLogs, patternStats] = await Promise.all([
+    logsPromise,
+    dueTodayPromise,
+    weekLogsPromise,
+    patternStatsPromise,
+  ]);
 
   const uniqueDays = new Set(logs.map((l) => l.day).filter(Boolean));
   const daysCompleted = uniqueDays.size;
@@ -33,7 +75,10 @@ export async function getDashboardStats() {
   // Streak calculation (consecutive dates)
   const logDates = [
     ...new Set(
-      logs.map((l) => l.date.toISOString().split("T")[0])
+      logs.map((l) => {
+        if (l.date instanceof Date) return l.date.toISOString().split("T")[0];
+        return new Date(l.date as string).toISOString().split("T")[0];
+      })
     ),
   ].sort((a, b) => b.localeCompare(a));
 
@@ -50,27 +95,6 @@ export async function getDashboardStats() {
     }
   }
 
-  // Spaced repetition due today
-  const dueToday = await prisma.repetitionItem.count({
-    where: {
-      userId,
-      status: "ACTIVE",
-      resolveDate: { lte: new Date(today.getTime() + 86400000) },
-    },
-  });
-
-  // Weekly progress
-  const dayOfWeek = now.getDay();
-  const weekStart = new Date(today);
-  weekStart.setDate(weekStart.getDate() - dayOfWeek);
-
-  const weekLogs = await prisma.practiceLog.count({
-    where: {
-      userId,
-      date: { gte: weekStart },
-    },
-  });
-
   // Today's problems from 31-day plan
   const nextDay =
     daysCompleted < 31
@@ -80,22 +104,6 @@ export async function getDashboardStats() {
   const todayProblems = await prisma.problem.findMany({
     where: { dayInPlan: nextDay },
     include: { pattern: true },
-  });
-
-  // Pattern mastery
-  const patternStats = await prisma.pattern.findMany({
-    include: {
-      problems: {
-        include: {
-          practiceLogs: {
-            where: { userId },
-            orderBy: { date: "desc" },
-            take: 1,
-          },
-        },
-      },
-    },
-    orderBy: { number: "asc" },
   });
 
   const patternMastery = patternStats.map((p) => {

@@ -24,11 +24,14 @@ export async function getProblems(filters?: {
   return prisma.problem.findMany({
     where,
     include: {
-      pattern: true,
+      pattern: {
+        select: { id: true, name: true }
+      },
       practiceLogs: {
         where: { userId: session.user.id },
         orderBy: { date: "desc" },
         take: 1,
+        select: { confidence: true }
       },
     },
     orderBy: [{ dayInPlan: "asc" }, { leetcodeNumber: "asc" }],

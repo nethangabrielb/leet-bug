@@ -3,7 +3,10 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { cache } from "react";
+
 import { auth } from "@/lib/auth";
+const getSession = cache(async () => await auth.api.getSession({ headers: await headers() }));
 import prisma from "@/lib/prisma";
 
 export async function addToRepetitionQueue(data: {
@@ -63,7 +66,7 @@ export async function updateRepetitionResult(data: {
 }
 
 export async function getActiveRepetitions() {
-  const session = await auth.api.getSession({ headers: await headers() });
+  const session = await getSession();
   if (!session) redirect("/login");
 
   return prisma.repetitionItem.findMany({
@@ -74,7 +77,7 @@ export async function getActiveRepetitions() {
 }
 
 export async function getClearedRepetitions() {
-  const session = await auth.api.getSession({ headers: await headers() });
+  const session = await getSession();
   if (!session) redirect("/login");
 
   return prisma.repetitionItem.findMany({

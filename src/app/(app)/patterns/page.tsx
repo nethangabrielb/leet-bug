@@ -11,8 +11,14 @@ export default async function PatternsPage() {
   const patterns = await prisma.pattern.findMany({
     include: {
       problems: {
-        include: {
-          practiceLogs: { where: { userId: session.user.id }, orderBy: { date: "desc" }, take: 1 },
+        select: {
+          id: true,
+          practiceLogs: {
+            where: { userId: session.user.id },
+            orderBy: { date: "desc" },
+            take: 1,
+            select: { confidence: true }
+          },
         },
       },
     },
