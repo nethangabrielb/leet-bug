@@ -98,8 +98,8 @@ export default function RoadmapClient() {
       setSelectedProblem(null);
       toast.success("Progress saved! Great job. 🌟");
       await queryClient.invalidateQueries();
-    } catch {
-      toast.error("Failed to save progress.");
+    } catch (e: any) {
+      toast.error(e.message || "Failed to save progress.");
     }
   };
 

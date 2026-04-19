@@ -100,8 +100,8 @@ export default function PracticeLogClient() {
       setShowModal(false);
       toast.success("Practice session logged! 🚀");
       await queryClient.invalidateQueries();
-    } catch {
-      toast.error("Failed to log practice session.");
+    } catch (e: any) {
+      toast.error(e.message || "Failed to log practice session.");
     }
   };
 
@@ -112,8 +112,8 @@ export default function PracticeLogClient() {
       await deletePracticeLog(deletingId);
       toast.success("Practice log deleted.");
       await queryClient.invalidateQueries();
-    } catch {
-      toast.error("Failed to delete log.");
+    } catch (e: any) {
+      toast.error(e.message || "Failed to delete log.");
     } finally {
       setIsDeleting(false);
       setDeletingId(null);

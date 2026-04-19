@@ -76,8 +76,8 @@ export default function SpacedRepetitionClient() {
       setSolvingItem(null);
       toast.success(result === "GREEN" ? "Awesome! Pattern cleared. 🎉" : "Progress recorded. Keep at it! 💪");
       await queryClient.invalidateQueries();
-    } catch {
-      toast.error("Failed to save your progress.");
+    } catch (e: any) {
+      toast.error(e.message || "Failed to save your progress.");
     }
   };
 
