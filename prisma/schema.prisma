@@ -24,6 +24,7 @@ model user {
   practiceLogs    PracticeLog[]
   repetitionItems RepetitionItem[]
   dailyCheckIns   DailyCheckIn[]
+  passedReviewDays Int[]           @default([])
 }
 
 model session {

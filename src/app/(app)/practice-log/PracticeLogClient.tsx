@@ -6,12 +6,23 @@ import { toast } from "sonner";
 import { getPracticeLogs, getAllProblemsWithPatterns } from "@/actions/getProblems";
 
 import { useState } from "react";
-import { Plus, ChevronDown, ChevronUp, Filter } from "lucide-react";
+import { Plus, ChevronDown, ChevronUp, Filter, Trash2 } from "lucide-react";
 
 import Modal from "@/components/Modal";
 import LogForm, { type LogFormData } from "@/components/LogForm";
 import ConfidenceBadge from "@/components/ConfidenceBadge";
 import { logPractice } from "@/actions/logPractice";
+import { deletePracticeLog } from "@/actions/deletePracticeLog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 type PracticeLogEntry = {
   id: string;
@@ -61,6 +72,8 @@ export default function PracticeLogClient() {
   const [showModal, setShowModal] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [filterConfidence, setFilterConfidence] = useState<string>("ALL");
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   if (errorLogs) throw errorLogs;
   if (errorProblems) throw errorProblems;
@@ -89,6 +102,21 @@ export default function PracticeLogClient() {
       await queryClient.invalidateQueries();
     } catch {
       toast.error("Failed to log practice session.");
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!deletingId) return;
+    setIsDeleting(true);
+    try {
+      await deletePracticeLog(deletingId);
+      toast.success("Practice log deleted.");
+      await queryClient.invalidateQueries();
+    } catch {
+      toast.error("Failed to delete log.");
+    } finally {
+      setIsDeleting(false);
+      setDeletingId(null);
     }
   };
 
@@ -133,13 +161,19 @@ export default function PracticeLogClient() {
                   {isExpanded ? <ChevronUp className="h-4 w-4 text-white/30" /> : <ChevronDown className="h-4 w-4 text-white/30" />}
                 </button>
                 {isExpanded && (
-                  <div className="border-t border-white/[0.06] bg-white/[0.01] px-4 py-3 space-y-2 animate-fade-in">
-                    <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="border-t border-white/[0.06] bg-white/[0.01] px-4 py-3 space-y-2 animate-fade-in relative shadow-inner">
+                    <div className="grid grid-cols-2 gap-4 text-sm pr-12">
                       <div><span className="text-xs text-white/40">Solved:</span> <span className="text-white/80">{log.solved}</span></div>
                       <div><span className="text-xs text-white/40">Pattern:</span> <span className="text-white/80">{log.patternUsed || log.problem.pattern.name}</span></div>
                     </div>
-                    {log.trippedUp && <div className="text-sm"><span className="text-xs text-white/40">What tripped you up:</span><p className="text-white/70">{log.trippedUp}</p></div>}
-                    {log.keyInsight && <div className="text-sm"><span className="text-xs text-white/40">Key insight:</span><p className="text-white/70">{log.keyInsight}</p></div>}
+                    {log.trippedUp && <div className="text-sm pr-12"><span className="text-xs text-white/40">What tripped you up:</span><p className="text-white/70">{log.trippedUp}</p></div>}
+                    {log.keyInsight && <div className="text-sm pr-12"><span className="text-xs text-white/40">Key insight:</span><p className="text-white/70">{log.keyInsight}</p></div>}
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setDeletingId(log.id); }}
+                      className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-lg text-white/30 transition-colors hover:bg-red-500/10 hover:text-red-400"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
                   </div>
                 )}
               </div>
@@ -156,6 +190,26 @@ export default function PracticeLogClient() {
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Log Practice Session" size="lg">
         <LogForm problems={problems} onSubmit={handleSubmit} onCancel={() => setShowModal(false)} />
       </Modal>
+
+      <AlertDialog open={!!deletingId} onOpenChange={(open) => !open && !isDeleting && setDeletingId(null)}>
+        <AlertDialogContent className="border-white/10 bg-[#0a0a0a]">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-white">Delete Practice Log?</AlertDialogTitle>
+            <AlertDialogDescription className="text-white/50">
+              This will remove this practice entry from your history. If this was your only attempt, it will also remove this problem from your Spaced Repetition queue. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={isDeleting} className="border-white/10 text-white hover:bg-white/5 hover:text-white">Cancel</AlertDialogCancel>
+            <AlertDialogAction disabled={isDeleting} onClick={(e) => {
+              e.preventDefault();
+              handleDelete();
+            }} className="bg-red-500 text-white hover:bg-red-600">
+              {isDeleting ? "Deleting..." : "Delete Entry"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

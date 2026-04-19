@@ -20,6 +20,44 @@ export async function logPractice(data: {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) redirect("/login");
 
+  const userId = session.user.id;
+
+  // 1. Verify if user is currently blocked by a Review Day
+  // Re-calculate the current day state
+  const userPromise = prisma.user.findUnique({
+    where: { id: userId },
+    select: { passedReviewDays: true },
+  });
+
+  const logsPromise = prisma.practiceLog.findMany({
+    where: { userId },
+    select: { day: true },
+  });
+
+  const dueTodayPromise = prisma.repetitionItem.count({
+    where: {
+      userId,
+      status: "ACTIVE",
+      resolveDate: { lte: new Date(new Date().setHours(23, 59, 59, 999)) },
+    },
+  });
+
+  const [user, logs, dueToday] = await Promise.all([userPromise, logsPromise, dueTodayPromise]);
+
+  const rawUniqueDays = new Set(logs.map((l) => l.day).filter(Boolean));
+  const passedReviewDays = user?.passedReviewDays || [];
+  
+  const completedDaysSet = new Set([...rawUniqueDays, ...passedReviewDays]);
+  const daysCompleted = completedDaysSet.size;
+
+  const nextDay = daysCompleted < 31 ? daysCompleted + 1 : 31;
+  const reviewDays = [7, 14, 21, 28];
+  const isReviewDayBlocked = reviewDays.includes(nextDay) && dueToday > 0;
+
+  if (isReviewDayBlocked) {
+    throw new Error("Review Day! You must clear your Spaced Repetition queue before progressing.");
+  }
+
   const log = await prisma.practiceLog.create({
     data: {
       userId: session.user.id,

@@ -1,9 +1,9 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getDashboardStats } from "@/actions/getDashboardStats";
-
+import { toast } from "sonner";
 import Link from "next/link";
 
 import {
@@ -14,6 +14,7 @@ import {
   TrendingUp,
   ExternalLink,
   Star,
+  Trophy,
 } from "lucide-react";
 
 import StatCard from "@/components/StatCard";
@@ -46,9 +47,13 @@ interface DashboardStats {
     mastery: number;
   }>;
   totalLogs: number;
+  isReviewDay: boolean;
+  isReviewDayBlocked: boolean;
 }
 
 export default function DashboardClient() {
+  const queryClient = useQueryClient();
+
   const { data: stats, isLoading, error } = useQuery({
     queryKey: ["dashboardStats"],
     queryFn: () => getDashboardStats(),
@@ -58,6 +63,17 @@ export default function DashboardClient() {
   if (isLoading || !stats) {
     return <DashboardSkeleton />;
   }
+
+  const handleCompleteReviewDay = async () => {
+    try {
+      const { markReviewDayComplete } = await import("@/actions/markReviewDayComplete");
+      await markReviewDayComplete(stats.currentDay);
+      toast.success("Review day complete! Unlocked new problems. 🚀");
+      await queryClient.invalidateQueries();
+    } catch (e: any) {
+      toast.error(e.message || "Failed to complete review day.");
+    }
+  };
   const progress = Math.round((stats.daysCompleted / stats.totalDays) * 100);
   const totalConfidence =
     stats.confidenceCounts.RED +
@@ -66,6 +82,25 @@ export default function DashboardClient() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 animate-fade-in">
+      {stats.isReviewDay && stats.isReviewDayBlocked && (
+        <div className="rounded-xl border border-amber-500/30 bg-gradient-to-br from-amber-500/10 to-orange-500/5 p-6 animate-pulse-glow shadow-[0_0_20px_rgba(245,158,11,0.1)]">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+              <h2 className="text-xl font-bold text-amber-400">STOP. It&apos;s Day {stats.currentDay}: Review Day.</h2>
+              <p className="mt-1 text-sm text-white/70">
+                You cannot progress to new material. You must stop, consolidate your knowledge, and clear your Spaced Repetition queue.
+              </p>
+            </div>
+            <Link
+              href="/spaced-repetition"
+              className="whitespace-nowrap rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-semibold text-black transition-all hover:bg-amber-400 hover:shadow-[0_0_15px_rgba(245,158,11,0.3)]"
+            >
+              Clear Queue Now ({stats.dueToday} Due)
+            </Link>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-white">Dashboard</h1>
@@ -116,7 +151,28 @@ export default function DashboardClient() {
                 31-Day Plan
               </span>
             </div>
-            {stats.todayProblems.length > 0 ? (
+            
+            {stats.isReviewDayBlocked ? (
+              <div className="rounded-xl border border-white/5 bg-black/20 p-8 text-center">
+                <RotateCcw className="mx-auto h-8 w-8 text-amber-500/50 mb-3" />
+                <p className="text-base font-medium text-amber-400">Locked</p>
+                <p className="text-sm text-white/40 mt-1">Clear your Spaced Repetition queue to unlock Day {stats.currentDay + 1}.</p>
+              </div>
+            ) : stats.isReviewDay && !stats.isReviewDayBlocked ? (
+              <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/5 p-8 text-center space-y-4">
+                <div>
+                  <Trophy className="mx-auto h-8 w-8 text-emerald-400 mb-3" />
+                  <p className="text-base font-medium text-white/90">Queue Cleared! ✨</p>
+                  <p className="text-sm text-white/50 mt-1">You have successfully consolidated your knowledge for Day {stats.currentDay}.</p>
+                </div>
+                <button
+                  onClick={handleCompleteReviewDay}
+                  className="rounded-lg bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-emerald-400 hover:shadow-[0_0_15px_rgba(16,185,129,0.3)]"
+                >
+                  Proceed to Day {stats.currentDay + 1}
+                </button>
+              </div>
+            ) : stats.todayProblems.length > 0 ? (
               <div className="space-y-3">
                 {stats.todayProblems.map((problem) => (
                   <div

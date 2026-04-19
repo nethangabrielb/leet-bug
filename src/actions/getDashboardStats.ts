@@ -15,6 +15,11 @@ export async function getDashboardStats() {
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
   // Fire independent queries concurrently
+  const userPromise = prisma.user.findUnique({
+    where: { id: userId },
+    select: { passedReviewDays: true },
+  });
+
   const logsPromise = prisma.practiceLog.findMany({
     where: { userId },
     select: { day: true, date: true, confidence: true, problemId: true },
@@ -56,7 +61,8 @@ export async function getDashboardStats() {
   });
 
   // Await all parallel promises
-  const [logs, dueToday, weekLogs, patternStats] = await Promise.all([
+  const [user, logs, dueToday, weekLogs, patternStats] = await Promise.all([
+    userPromise,
     logsPromise,
     dueTodayPromise,
     weekLogsPromise,
@@ -95,11 +101,23 @@ export async function getDashboardStats() {
     }
   }
 
+  // Count passed review days correctly into the progress tally
+  const rawUniqueDays = new Set(logs.map((l) => l.day).filter(Boolean));
+  const passedReviewDays = user?.passedReviewDays || [];
+  
+  // Total completed days equals unique parsed log days PLUS passed review days
+  const completedDaysSet = new Set([...rawUniqueDays, ...passedReviewDays]);
+  const daysCompleted = completedDaysSet.size;
+
   // Today's problems from 31-day plan
   const nextDay =
     daysCompleted < 31
       ? daysCompleted + 1
       : 31;
+
+  const reviewDays = [7, 14, 21, 28];
+  const isReviewDay = reviewDays.includes(nextDay);
+  const isReviewDayBlocked = isReviewDay && dueToday > 0;
 
   const todayProblems = await prisma.problem.findMany({
     where: { dayInPlan: nextDay },
@@ -140,5 +158,7 @@ export async function getDashboardStats() {
     todayProblems,
     patternMastery,
     totalLogs: logs.length,
+    isReviewDay,
+    isReviewDayBlocked,
   };
 }
