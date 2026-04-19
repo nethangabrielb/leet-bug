@@ -1,6 +1,7 @@
 "use client";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getActiveRepetitions, getClearedRepetitions } from "@/actions/manageRepetition";
 import { getAllProblemsWithPatterns } from "@/actions/getProblems";
 
@@ -40,22 +41,26 @@ type ProblemItem = {
 };
 
 export default function SpacedRepetitionClient() {
-  const { data: active } = useSuspenseQuery({
+  const { data: active, isLoading: isLoadingActive } = useQuery({
     queryKey: ["activeRepetitions"],
     queryFn: () => getActiveRepetitions(),
   });
   
-  const { data: cleared } = useSuspenseQuery({
+  const { data: cleared, isLoading: isLoadingCleared } = useQuery({
     queryKey: ["clearedRepetitions"],
     queryFn: () => getClearedRepetitions(),
   });
   
-  const { data: problems } = useSuspenseQuery({
+  const { data: problems, isLoading: isLoadingProblems } = useQuery({
     queryKey: ["allProblems"],
     queryFn: () => getAllProblemsWithPatterns(),
   });
 
   const [tab, setTab] = useState<"active" | "cleared">("active");
+
+  if (isLoadingActive || isLoadingCleared || isLoadingProblems || !active || !cleared || !problems) {
+    return <SpacedRepetitionSkeleton />;
+  }
   const [solvingItem, setSolvingItem] = useState<RepItem | null>(null);
   const now = new Date();
 
@@ -178,6 +183,26 @@ export default function SpacedRepetitionClient() {
           </div>
         )}
       </Modal>
+    </div>
+  );
+}
+
+function SpacedRepetitionSkeleton() {
+  return (
+    <div className="mx-auto max-w-5xl space-y-6">
+      <div>
+        <Skeleton className="h-9 w-64 mb-2" />
+        <Skeleton className="h-5 w-[400px] max-w-full" />
+      </div>
+      <div className="flex gap-1 rounded-xl bg-white/[0.03] p-1">
+        <Skeleton className="h-10 flex-1 rounded-lg" />
+        <Skeleton className="h-10 flex-1 rounded-lg" />
+      </div>
+      <div className="space-y-3">
+        {[1, 2, 3, 4].map((i) => (
+          <Skeleton key={i} className="h-16 w-full rounded-xl border border-white/[0.06] bg-white/[0.02]" />
+        ))}
+      </div>
     </div>
   );
 }

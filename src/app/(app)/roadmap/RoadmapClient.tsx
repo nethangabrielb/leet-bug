@@ -1,6 +1,7 @@
 "use client";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getProblems } from "@/actions/getProblems";
 
 import { useState } from "react";
@@ -50,12 +51,16 @@ const reviewDays = [7, 14, 21, 28];
 const bossDays = [29, 30, 31];
 
 export default function RoadmapClient() {
-  const { data: problems } = useSuspenseQuery({
+  const { data: problems, isLoading } = useQuery({
     queryKey: ["roadmapProblems"],
     queryFn: () => getProblems(),
   });
 
   const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
+
+  if (isLoading || !problems) {
+    return <RoadmapSkeleton />;
+  }
 
   // Group problems by day
   const dayMap: Record<number, Problem[]> = {};
@@ -272,6 +277,33 @@ export default function RoadmapClient() {
           </div>
         )}
       </Modal>
+    </div>
+  );
+}
+
+function RoadmapSkeleton() {
+  return (
+    <div className="mx-auto max-w-5xl space-y-8">
+      <div>
+        <Skeleton className="h-9 w-48 mb-2" />
+        <Skeleton className="h-5 w-[400px] max-w-full" />
+      </div>
+      {[1, 2, 3].map((week) => (
+        <div key={week} className="space-y-3">
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-8 w-8 rounded-lg" />
+            <div>
+              <Skeleton className="h-6 w-64 mb-1 max-w-full" />
+              <Skeleton className="h-4 w-32" />
+            </div>
+          </div>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {[1, 2, 3, 4, 5, 6, 7].map((day) => (
+              <Skeleton key={day} className="h-[120px] rounded-xl border border-white/[0.08] bg-white/[0.02]" />
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

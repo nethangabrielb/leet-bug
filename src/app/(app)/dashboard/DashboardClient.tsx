@@ -1,6 +1,7 @@
 "use client";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getDashboardStats } from "@/actions/getDashboardStats";
 
 import Link from "next/link";
@@ -48,10 +49,14 @@ interface DashboardStats {
 }
 
 export default function DashboardClient() {
-  const { data: stats } = useSuspenseQuery({
+  const { data: stats, isLoading } = useQuery({
     queryKey: ["dashboardStats"],
     queryFn: () => getDashboardStats(),
   });
+
+  if (isLoading || !stats) {
+    return <DashboardSkeleton />;
+  }
   const progress = Math.round((stats.daysCompleted / stats.totalDays) * 100);
   const totalConfidence =
     stats.confidenceCounts.RED +
@@ -345,6 +350,34 @@ export default function DashboardClient() {
               </Link>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DashboardSkeleton() {
+  return (
+    <div className="mx-auto max-w-7xl space-y-6">
+      <div>
+        <Skeleton className="h-9 w-48 mb-2" />
+        <Skeleton className="h-5 w-64" />
+      </div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {[1, 2, 3, 4].map((i) => (
+          <Skeleton key={i} className="h-[104px] rounded-xl border border-white/[0.06] bg-white/[0.02]" />
+        ))}
+      </div>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <div className="space-y-6 lg:col-span-2">
+          <Skeleton className="h-[200px] rounded-xl border border-white/[0.06] bg-white/[0.02]" />
+          <Skeleton className="h-[200px] rounded-xl border border-white/[0.06] bg-white/[0.02]" />
+          <Skeleton className="h-[150px] rounded-xl border border-white/[0.06] bg-white/[0.02]" />
+        </div>
+        <div className="space-y-6">
+          <Skeleton className="h-[300px] rounded-xl border border-white/[0.06] bg-white/[0.02]" />
+          <Skeleton className="h-[250px] rounded-xl border border-white/[0.06] bg-white/[0.02]" />
+          <Skeleton className="h-[200px] rounded-xl border border-white/[0.06] bg-white/[0.02]" />
         </div>
       </div>
     </div>

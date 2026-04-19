@@ -1,14 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getPatternsWithStats } from "@/actions/getPatterns";
 
 export default function PatternsClient() {
-  const { data: patternCards } = useSuspenseQuery({
+  const { data: patternCards, isLoading } = useQuery({
     queryKey: ["patternsStats"],
     queryFn: () => getPatternsWithStats(),
   });
+
+  if (isLoading || !patternCards) {
+    return <PatternsSkeleton />;
+  }
 
   return (
     <div className="mx-auto max-w-5xl space-y-6 animate-fade-in">
@@ -36,6 +41,22 @@ export default function PatternsClient() {
               </div>
             </div>
           </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PatternsSkeleton() {
+  return (
+    <div className="mx-auto max-w-5xl space-y-6">
+      <div>
+        <Skeleton className="h-9 w-48 mb-2" />
+        <Skeleton className="h-5 w-[600px] max-w-full" />
+      </div>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <Skeleton key={i} className="h-[180px] rounded-xl border border-white/[0.06] bg-white/[0.02]" />
         ))}
       </div>
     </div>

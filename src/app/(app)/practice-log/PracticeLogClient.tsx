@@ -1,6 +1,7 @@
 "use client";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import { Skeleton } from "@/components/ui/skeleton";
 import { getPracticeLogs, getAllProblemsWithPatterns } from "@/actions/getProblems";
 
 import { useState } from "react";
@@ -45,18 +46,23 @@ interface Props {
 }
 
 export default function PracticeLogClient() {
-  const { data: logs } = useSuspenseQuery({
+  const { data: logs, isLoading: isLoadingLogs } = useQuery({
     queryKey: ["practiceLogs"],
     queryFn: () => getPracticeLogs(),
   });
   
-  const { data: problems } = useSuspenseQuery({
+  const { data: problems, isLoading: isLoadingProblems } = useQuery({
     queryKey: ["allProblems"],
     queryFn: () => getAllProblemsWithPatterns(),
   });
+
   const [showModal, setShowModal] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [filterConfidence, setFilterConfidence] = useState<string>("ALL");
+
+  if (isLoadingLogs || isLoadingProblems || !logs || !problems) {
+    return <PracticeLogSkeleton />;
+  }
 
   const filtered = filterConfidence === "ALL" ? logs : logs.filter((l) => l.confidence === filterConfidence);
 
@@ -140,6 +146,32 @@ export default function PracticeLogClient() {
       <Modal isOpen={showModal} onClose={() => setShowModal(false)} title="Log Practice Session" size="lg">
         <LogForm problems={problems} onSubmit={handleSubmit} onCancel={() => setShowModal(false)} />
       </Modal>
+    </div>
+  );
+}
+
+function PracticeLogSkeleton() {
+  return (
+    <div className="mx-auto max-w-5xl space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <Skeleton className="h-9 w-48 mb-2" />
+          <Skeleton className="h-5 w-72" />
+        </div>
+        <Skeleton className="h-10 w-28 rounded-lg" />
+      </div>
+      <div className="flex items-center gap-2">
+        <Skeleton className="h-8 w-16" />
+        <Skeleton className="h-8 w-16" />
+        <Skeleton className="h-8 w-16" />
+        <Skeleton className="h-8 w-16" />
+        <Skeleton className="ml-auto h-4 w-16" />
+      </div>
+      <div className="space-y-2">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <Skeleton key={i} className="h-16 w-full rounded-xl border border-white/[0.06] bg-white/[0.02]" />
+        ))}
+      </div>
     </div>
   );
 }
