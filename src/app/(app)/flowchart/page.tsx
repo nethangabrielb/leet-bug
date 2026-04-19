@@ -242,7 +242,7 @@ export default function FlowchartPage() {
   };
 
   return (
-      <div className="mx-auto max-w-4xl space-y-8 animate-fade-in">
+      <div className="mx-auto max-w-7xl space-y-8 animate-fade-in">
         <div>
           <h1 className="text-3xl font-bold text-white">
             🧭 Pattern Decision Flowchart
@@ -253,8 +253,9 @@ export default function FlowchartPage() {
           </p>
         </div>
 
-        {/* Interactive Flowchart */}
-        <div className="glass-card relative overflow-hidden">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 items-start">
+          {/* Interactive Flowchart */}
+          <div className="glass-card relative overflow-hidden h-full flex flex-col justify-center min-h-[400px]">
           {/* Progress dots */}
           <div className="mb-6 flex items-center justify-center gap-2">
             {history.map((_, i) => (
@@ -356,7 +357,7 @@ export default function FlowchartPage() {
         </div>
 
         {/* Full Flowchart Reference (always visible) */}
-        <div className="glass-card">
+        <div className="glass-card h-full">
           <h2 className="mb-4 text-sm font-medium uppercase tracking-wider text-white/40">
             Full Flowchart Reference
           </h2>
@@ -401,6 +402,7 @@ export default function FlowchartPage() {
               );
             })}
           </div>
+        </div>
         </div>
 
         {/* Tip */}
