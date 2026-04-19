@@ -51,13 +51,14 @@ const reviewDays = [7, 14, 21, 28];
 const bossDays = [29, 30, 31];
 
 export default function RoadmapClient() {
-  const { data: problems, isLoading } = useQuery({
+  const { data: problems, isLoading, error } = useQuery({
     queryKey: ["roadmapProblems"],
     queryFn: () => getProblems(),
   });
 
   const [selectedProblem, setSelectedProblem] = useState<Problem | null>(null);
 
+  if (error) throw error;
   if (isLoading || !problems) {
     return <RoadmapSkeleton />;
   }

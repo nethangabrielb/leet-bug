@@ -41,23 +41,27 @@ type ProblemItem = {
 };
 
 export default function SpacedRepetitionClient() {
-  const { data: active, isLoading: isLoadingActive } = useQuery({
+  const { data: active, isLoading: isLoadingActive, error: errorActive } = useQuery({
     queryKey: ["activeRepetitions"],
     queryFn: () => getActiveRepetitions(),
   });
   
-  const { data: cleared, isLoading: isLoadingCleared } = useQuery({
+  const { data: cleared, isLoading: isLoadingCleared, error: errorCleared } = useQuery({
     queryKey: ["clearedRepetitions"],
     queryFn: () => getClearedRepetitions(),
   });
   
-  const { data: problems, isLoading: isLoadingProblems } = useQuery({
+  const { data: problems, isLoading: isLoadingProblems, error: errorProblems } = useQuery({
     queryKey: ["allProblems"],
     queryFn: () => getAllProblemsWithPatterns(),
   });
 
   const [tab, setTab] = useState<"active" | "cleared">("active");
   const [solvingItem, setSolvingItem] = useState<RepItem | null>(null);
+
+  if (errorActive) throw errorActive;
+  if (errorCleared) throw errorCleared;
+  if (errorProblems) throw errorProblems;
 
   if (isLoadingActive || isLoadingCleared || isLoadingProblems || !active || !cleared || !problems) {
     return <SpacedRepetitionSkeleton />;

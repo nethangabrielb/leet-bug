@@ -49,11 +49,12 @@ interface DashboardStats {
 }
 
 export default function DashboardClient() {
-  const { data: stats, isLoading } = useQuery({
+  const { data: stats, isLoading, error } = useQuery({
     queryKey: ["dashboardStats"],
     queryFn: () => getDashboardStats(),
   });
 
+  if (error) throw error;
   if (isLoading || !stats) {
     return <DashboardSkeleton />;
   }

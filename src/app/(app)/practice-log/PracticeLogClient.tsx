@@ -46,12 +46,12 @@ interface Props {
 }
 
 export default function PracticeLogClient() {
-  const { data: logs, isLoading: isLoadingLogs } = useQuery({
+  const { data: logs, isLoading: isLoadingLogs, error: errorLogs } = useQuery({
     queryKey: ["practiceLogs"],
     queryFn: () => getPracticeLogs(),
   });
   
-  const { data: problems, isLoading: isLoadingProblems } = useQuery({
+  const { data: problems, isLoading: isLoadingProblems, error: errorProblems } = useQuery({
     queryKey: ["allProblems"],
     queryFn: () => getAllProblemsWithPatterns(),
   });
@@ -59,6 +59,9 @@ export default function PracticeLogClient() {
   const [showModal, setShowModal] = useState(false);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [filterConfidence, setFilterConfidence] = useState<string>("ALL");
+
+  if (errorLogs) throw errorLogs;
+  if (errorProblems) throw errorProblems;
 
   if (isLoadingLogs || isLoadingProblems || !logs || !problems) {
     return <PracticeLogSkeleton />;

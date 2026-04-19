@@ -6,11 +6,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { getPatternsWithStats } from "@/actions/getPatterns";
 
 export default function PatternsClient() {
-  const { data: patternCards, isLoading } = useQuery({
+  const { data: patternCards, isLoading, error } = useQuery({
     queryKey: ["patternsStats"],
     queryFn: () => getPatternsWithStats(),
   });
 
+  if (error) throw error;
   if (isLoading || !patternCards) {
     return <PatternsSkeleton />;
   }
