@@ -52,9 +52,9 @@ export default function PracticeGuidePage() {
             ].map((step, i) => (
               <div
                 key={i}
-                className="flex items-start gap-3 rounded-lg border border-white/[0.06] bg-white/[0.02] p-3"
+                className="flex items-start gap-3 rounded-lg border border-white/5 bg-[#1a1a1a] p-3"
               >
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-violet-500/20 to-indigo-500/20 text-xs font-bold text-violet-400">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500/20 to-emerald-500/20 text-xs font-bold text-emerald-400">
                   {i + 1}
                 </span>
                 <p className="text-sm text-white/70">{step}</p>
@@ -136,9 +136,9 @@ export default function PracticeGuidePage() {
             {progressionData.map((item) => (
               <div
                 key={item.week}
-                className="flex items-start gap-3 rounded-lg border border-white/[0.06] bg-white/[0.02] p-3"
+                className="flex items-start gap-3 rounded-lg border border-white/5 bg-[#1a1a1a] p-3"
               >
-                <span className="shrink-0 rounded-lg bg-violet-500/10 px-2 py-1 text-xs font-bold text-violet-400">
+                <span className="shrink-0 rounded-lg bg-emerald-500/10 px-2 py-1 text-xs font-bold text-emerald-400">
                   {item.week}
                 </span>
                 <p className="text-sm text-white/70">{item.description}</p>

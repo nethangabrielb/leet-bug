@@ -99,7 +99,7 @@ export default function PracticeLogClient() {
           <h1 className="text-3xl font-bold text-white">Practice Log</h1>
           <p className="mt-1 text-sm text-white/50">Track every attempt. The 🔴s become 🟡s. The 🟡s become 🟢s.</p>
         </div>
-        <button onClick={() => setShowModal(true)} className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-violet-500 to-indigo-600 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:shadow-lg hover:shadow-violet-500/25">
+        <button onClick={() => setShowModal(true)} className="flex items-center gap-2 rounded-lg bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-white transition-all hover:shadow-lg hover:shadow-emerald-500/25">
           <Plus className="h-4 w-4" />New Entry
         </button>
       </div>
@@ -108,7 +108,7 @@ export default function PracticeLogClient() {
         <Filter className="h-4 w-4 text-white/30" />
         {["ALL", "RED", "YELLOW", "GREEN"].map((c) => (
           <button key={c} onClick={() => setFilterConfidence(c)}
-            className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${filterConfidence === c ? "bg-violet-500/15 text-violet-300" : "bg-white/[0.03] text-white/40 hover:bg-white/[0.06] hover:text-white/60"}`}>
+            className={`rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${filterConfidence === c ? "bg-emerald-500/15 text-emerald-300" : "bg-white/[0.03] text-white/40 hover:bg-white/[0.06] hover:text-white/60"}`}>
             {c === "ALL" ? "All" : c === "RED" ? "🔴 Red" : c === "YELLOW" ? "🟡 Yellow" : "🟢 Green"}
           </button>
         ))}
@@ -123,7 +123,7 @@ export default function PracticeLogClient() {
             return (
               <div key={log.id} className="glass-card !p-0 overflow-hidden">
                 <button onClick={() => setExpandedId(isExpanded ? null : log.id)} className="flex w-full items-center gap-4 p-4 text-left transition-colors hover:bg-white/[0.02]">
-                  {log.day && <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-violet-500/10 text-xs font-bold text-violet-400">D{log.day}</span>}
+                  {log.day && <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 text-xs font-bold text-emerald-400">D{log.day}</span>}
                   <div className="flex-1 min-w-0">
                     <p className="truncate text-sm font-medium text-white/90">#{log.problem.leetcodeNumber} — {log.problem.title}</p>
                     <p className="text-xs text-white/40">{log.problem.pattern.name} • {date.toLocaleDateString("en-US", { month: "short", day: "numeric" })} {log.timeTaken && `• ${log.timeTaken} min`}</p>
@@ -179,7 +179,7 @@ function PracticeLogSkeleton() {
       </div>
       <div className="space-y-2">
         {[1, 2, 3, 4, 5].map((i) => (
-          <Skeleton key={i} className="h-16 w-full rounded-xl border border-white/[0.06] bg-white/[0.02]" />
+          <Skeleton key={i} className="h-16 w-full rounded-xl border border-white/5 bg-[#1a1a1a]" />
         ))}
       </div>
     </div>

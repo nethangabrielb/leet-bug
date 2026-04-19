@@ -33,7 +33,7 @@ export default async function PatternDetailPage({ params }: { params: Promise<{ 
 
         <div className="glass-card">
           <div className="flex items-center gap-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500/20 to-indigo-500/20 text-2xl font-bold text-violet-400">{pattern.number}</div>
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500/20 to-emerald-500/20 text-2xl font-bold text-emerald-400">{pattern.number}</div>
             <div>
               <h1 className="text-2xl font-bold text-white">{pattern.name}</h1>
               <p className="text-sm text-white/50">{pattern.description}</p>
@@ -54,8 +54,8 @@ export default async function PatternDetailPage({ params }: { params: Promise<{ 
         {pattern.flowchartHint && (
           <div className="glass-card">
             <h2 className="mb-3 text-sm font-medium uppercase tracking-wider text-white/40">Pattern Decision Flowchart</h2>
-            <div className="rounded-xl border border-violet-500/10 bg-violet-500/5 p-4">
-              <p className="font-mono text-sm text-violet-300">{pattern.flowchartHint}</p>
+            <div className="rounded-xl border border-emerald-500/10 bg-emerald-500/5 p-4">
+              <p className="font-mono text-sm text-emerald-300">{pattern.flowchartHint}</p>
             </div>
           </div>
         )}
@@ -77,7 +77,7 @@ export default async function PatternDetailPage({ params }: { params: Promise<{ 
                   </div>
                   {latestLog && <ConfidenceBadge level={latestLog.confidence} size="sm" />}
                   <span className={`rounded-md border px-2 py-0.5 text-[10px] font-semibold uppercase ${problem.difficulty === "EASY" ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-400" : "border-amber-500/20 bg-amber-500/10 text-amber-400"}`}>{problem.difficulty}</span>
-                  <Link href={problem.url} target="_blank" className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400 transition-colors hover:bg-violet-500/20">
+                  <Link href={problem.url} target="_blank" className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 transition-colors hover:bg-emerald-500/20">
                     <ExternalLink className="h-3.5 w-3.5" />
                   </Link>
                 </div>

@@ -17,7 +17,7 @@ export default function StatCard({
   className = "",
 }: StatCardProps) {
   return (
-    <div className={`glass-card group transition-all duration-300 hover:border-white/[0.15] hover:shadow-lg hover:shadow-violet-500/5 ${className}`}>
+    <div className={`glass-card group transition-all duration-300 hover:border-white/[0.15] hover:shadow-lg hover:shadow-emerald-500/5 ${className}`}>
       <div className="flex items-start justify-between">
         <div>
           <p className="text-xs font-medium uppercase tracking-wider text-white/40">
@@ -31,7 +31,7 @@ export default function StatCard({
           )}
         </div>
         {icon && (
-          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400 transition-colors group-hover:bg-violet-500/20">
+          <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 transition-colors group-hover:bg-emerald-500/20">
             {icon}
           </div>
         )}

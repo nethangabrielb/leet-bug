@@ -71,7 +71,7 @@ export default function Timer({
       </div>
       <div className="flex items-center gap-2">
         <button onClick={() => setIsRunning(!isRunning)} disabled={totalSeconds === 0}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-500/20 text-violet-400 transition-all hover:bg-violet-500/30 disabled:opacity-40">
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/20 text-emerald-400 transition-all hover:bg-emerald-500/30 disabled:opacity-40">
           {isRunning ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4 ml-0.5" />}
         </button>
         <button onClick={reset}

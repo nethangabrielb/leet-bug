@@ -42,8 +42,8 @@ const blocks = [
       "Test with edge cases before submitting.",
       "Follow the 🔴🟡🟢 protocol from Practice Guide.",
     ],
-    color: "from-violet-500/20 to-indigo-500/20",
-    textColor: "text-violet-400",
+    color: "from-emerald-500/20 to-emerald-500/20",
+    textColor: "text-emerald-400",
   },
   {
     key: "block3Done" as const,
@@ -57,7 +57,7 @@ const blocks = [
       "Rate yourself: 🔴→+3d, 🟡→+7d, 🟢→Remove from queue.",
     ],
     color: "from-cyan-500/20 to-blue-500/20",
-    textColor: "text-cyan-400",
+    textColor: "text-emerald-400",
   },
   {
     key: "block4Done" as const,
@@ -156,8 +156,8 @@ export default function DailyRoutinePage() {
               blocks, trust the process.
             </p>
           </div>
-          <div className="flex items-center gap-2 rounded-full bg-violet-500/10 px-4 py-2">
-            <span className="text-2xl font-bold text-violet-400">
+          <div className="flex items-center gap-2 rounded-full bg-emerald-500/10 px-4 py-2">
+            <span className="text-2xl font-bold text-emerald-400">
               {completedBlocks}
             </span>
             <span className="text-xs text-white/40">/4 blocks</span>
@@ -228,8 +228,8 @@ export default function DailyRoutinePage() {
         </div>
 
         {/* Quick Start Cheat Sheet */}
-        <div className="rounded-xl border border-violet-500/10 bg-violet-500/5 p-5">
-          <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-violet-400">
+        <div className="rounded-xl border border-emerald-500/10 bg-emerald-500/5 p-5">
+          <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-emerald-400">
             ⚡ Minimum Viable Day (30 min total)
           </h3>
           <div className="space-y-1.5 font-mono text-sm text-white/60">
@@ -250,7 +250,7 @@ export default function DailyRoutinePage() {
               <span className="text-white/30">[5 min]</span>
             </p>
           </div>
-          <p className="mt-3 text-xs text-violet-400/60">
+          <p className="mt-3 text-xs text-emerald-400/60">
             That&apos;s it. You showed up. That counts.
           </p>
         </div>

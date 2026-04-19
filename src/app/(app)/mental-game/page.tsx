@@ -30,7 +30,7 @@ export default function MentalGamePage() {
         {/* Pre-Exam Ritual */}
         <div className="glass-card">
           <div className="mb-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-500/10 text-violet-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400">
               <Wind className="h-5 w-5" />
             </div>
             <h2 className="text-lg font-semibold text-white">
@@ -54,14 +54,14 @@ export default function MentalGamePage() {
             ].map((step, i) => (
               <label
                 key={i}
-                className="flex cursor-pointer items-start gap-3 rounded-lg border border-white/[0.06] bg-white/[0.02] p-3 transition-all hover:border-white/[0.12] hover:bg-white/[0.04]"
+                className="flex cursor-pointer items-start gap-3 rounded-lg border border-white/5 bg-[#1a1a1a] p-3 transition-all hover:border-emerald-500/30 hover:bg-white/5"
               >
                 <input
                   type="checkbox"
-                  className="mt-1 h-4 w-4 rounded border-white/20 bg-white/5 text-violet-500 focus:ring-violet-500/50"
+                  className="mt-1 h-4 w-4 rounded border-white/20 bg-white/5 text-emerald-500 focus:ring-emerald-500/50"
                 />
                 <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-violet-400">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-emerald-400">
                     {step.time}
                   </span>
                   <p className="text-sm text-white/70">{step.text}</p>
@@ -90,7 +90,7 @@ export default function MentalGamePage() {
             ].map((tip, i) => (
               <div
                 key={i}
-                className="flex items-start gap-3 rounded-lg border border-white/[0.06] bg-white/[0.02] p-3"
+                className="flex items-start gap-3 rounded-lg border border-white/5 bg-[#1a1a1a] p-3"
               >
                 <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-500/10 text-[10px] font-bold text-amber-400">
                   {i + 1}
@@ -123,7 +123,7 @@ export default function MentalGamePage() {
         {/* 2-Minute Checkpoint */}
         <div className="glass-card">
           <div className="mb-4 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400">
               <AlertTriangle className="h-5 w-5" />
             </div>
             <h2 className="text-lg font-semibold text-white">

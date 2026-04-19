@@ -86,7 +86,7 @@ const flowchart: Record<NodeId, FlowNode> = {
     patternDesc:
       "Use a Map or Set for O(1) lookups. Frequency counters, duplicate detection, \"has this appeared before?\"",
     icon: <Hash className="h-6 w-6" />,
-    color: "from-violet-500/20 to-purple-500/20",
+    color: "from-emerald-500/20 to-purple-500/20",
     yesTo: null,
     noTo: null,
   },
@@ -172,7 +172,7 @@ const flowchart: Record<NodeId, FlowNode> = {
     patternDesc:
       "Walk the list with a pointer. Common tricks: dummy head node, fast/slow pointers for cycle detection, reverse by rewiring .next pointers.",
     icon: <Link2 className="h-6 w-6" />,
-    color: "from-sky-500/20 to-indigo-500/20",
+    color: "from-sky-500/20 to-emerald-500/20",
     yesTo: null,
     noTo: null,
   },
@@ -189,7 +189,7 @@ const flowchart: Record<NodeId, FlowNode> = {
     patternDesc:
       "Use % for remainders and digit extraction. Math.floor(n/10) removes last digit, n%10 gets last digit. Your best friend for conversion problems.",
     icon: <Calculator className="h-6 w-6" />,
-    color: "from-fuchsia-500/20 to-violet-500/20",
+    color: "from-fuchsia-500/20 to-emerald-500/20",
     yesTo: null,
     noTo: null,
   },
@@ -261,10 +261,10 @@ export default function FlowchartPage() {
             {history.map((_, i) => (
               <div
                 key={i}
-                className="h-2 w-2 rounded-full bg-violet-500/40"
+                className="h-2 w-2 rounded-full bg-emerald-500/40"
               />
             ))}
-            <div className="h-2.5 w-2.5 rounded-full bg-violet-500 shadow-sm shadow-violet-500/50" />
+            <div className="h-2.5 w-2.5 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50" />
           </div>
 
           {/* Current Node */}
@@ -292,7 +292,7 @@ export default function FlowchartPage() {
                 <div className="flex gap-3 justify-center">
                   <button
                     onClick={handleReset}
-                    className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-violet-500 to-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:shadow-lg hover:shadow-violet-500/25"
+                    className="flex items-center gap-2 rounded-lg bg-emerald-500 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:shadow-lg hover:shadow-emerald-500/25"
                   >
                     <RotateCcw className="h-4 w-4" />
                     Start Over
@@ -309,8 +309,8 @@ export default function FlowchartPage() {
             ) : (
               /* ── Question Node ── */
               <div className="animate-slide-up w-full max-w-lg">
-                <div className="mb-6 flex h-14 w-14 mx-auto items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500/20 to-indigo-500/20">
-                  <GitFork className="h-6 w-6 text-violet-400" />
+                <div className="mb-6 flex h-14 w-14 mx-auto items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-500/20 to-emerald-500/20">
+                  <GitFork className="h-6 w-6 text-emerald-400" />
                 </div>
                 <h2 className="text-xl font-semibold text-white mb-8">
                   {node.question}
@@ -374,7 +374,7 @@ export default function FlowchartPage() {
                   key={stepId}
                   className={`rounded-lg px-4 py-2.5 transition-all ${
                     isActive
-                      ? "border border-violet-500/20 bg-violet-500/5"
+                      ? "border border-emerald-500/20 bg-emerald-500/5"
                       : "border border-transparent"
                   }`}
                 >
@@ -389,7 +389,7 @@ export default function FlowchartPage() {
                           <span className="text-white/20">└── Yes →</span>
                           <span
                             className={`font-semibold ${
-                              isActive ? "text-violet-400" : "text-white/80"
+                              isActive ? "text-emerald-400" : "text-white/80"
                             }`}
                           >
                             {result.answer}
@@ -406,8 +406,8 @@ export default function FlowchartPage() {
         </div>
 
         {/* Tip */}
-        <div className="rounded-xl border border-violet-500/10 bg-violet-500/5 p-5 text-center">
-          <p className="text-sm font-medium text-violet-300">
+        <div className="rounded-xl border border-emerald-500/10 bg-emerald-500/5 p-5 text-center">
+          <p className="text-sm font-medium text-emerald-300">
             💡 Print this out. Tape it next to your monitor. Use it every single
             time until you don&apos;t need it anymore.
           </p>

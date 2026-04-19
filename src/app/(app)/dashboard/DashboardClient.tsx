@@ -112,7 +112,7 @@ export default function DashboardClient() {
               <h2 className="text-lg font-semibold text-white">
                 Today&apos;s Problem — Day {stats.currentDay}
               </h2>
-              <span className="rounded-full bg-violet-500/10 px-3 py-1 text-xs font-medium text-violet-400">
+              <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-medium text-emerald-400">
                 31-Day Plan
               </span>
             </div>
@@ -121,7 +121,7 @@ export default function DashboardClient() {
                 {stats.todayProblems.map((problem) => (
                   <div
                     key={problem.id}
-                    className="flex items-center justify-between rounded-xl border border-white/[0.06] bg-white/[0.02] p-4 transition-all hover:border-white/[0.12] hover:bg-white/[0.04]"
+                    className="flex items-center justify-between rounded-xl border border-white/5 bg-[#1a1a1a] p-4 transition-all hover:border-emerald-500/30 hover:bg-white/5"
                   >
                     <div className="flex items-center gap-3">
                       <span className="font-mono text-xs text-white/30">
@@ -149,7 +149,7 @@ export default function DashboardClient() {
                       <Link
                         href={problem.url}
                         target="_blank"
-                        className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400 transition-colors hover:bg-violet-500/20"
+                        className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 transition-colors hover:bg-emerald-500/20"
                       >
                         <ExternalLink className="h-3.5 w-3.5" />
                       </Link>
@@ -176,7 +176,7 @@ export default function DashboardClient() {
                 <Link
                   href={`/patterns/${pattern.id}`}
                   key={pattern.id}
-                  className="group flex flex-col items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.02] p-3 transition-all hover:border-white/[0.12] hover:bg-white/[0.04]"
+                  className="group flex flex-col items-center gap-2 rounded-xl border border-white/5 bg-[#1a1a1a] p-3 transition-all hover:border-emerald-500/30 hover:bg-white/5"
                 >
                   <div
                     className="flex h-10 w-10 items-center justify-center rounded-lg text-lg font-bold"
@@ -191,7 +191,7 @@ export default function DashboardClient() {
                               : "oklch(1 0 0 / 5%)",
                       color:
                         pattern.mastery >= 80
-                          ? "oklch(0.723 0.219 149.579)"
+                          ? "oklch(0.623 0.188 159.805)"
                           : pattern.mastery >= 40
                             ? "oklch(0.795 0.184 86.047)"
                             : pattern.mastery > 0
@@ -224,7 +224,7 @@ export default function DashboardClient() {
             </div>
             <div className="h-3 overflow-hidden rounded-full bg-white/[0.05]">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-violet-500 via-indigo-500 to-cyan-400 transition-all duration-700"
+                className="h-full rounded-full bg-emerald-500 transition-all duration-700"
                 style={{
                   width: `${Math.min(100, (stats.weeklyDone / stats.weeklyTarget) * 100)}%`,
                 }}
@@ -259,7 +259,7 @@ export default function DashboardClient() {
             <div className="mt-4 flex w-full items-center justify-center">
               <Link
                 href="/roadmap"
-                className="flex items-center gap-1.5 text-xs font-medium text-violet-400 transition-colors hover:text-violet-300"
+                className="flex items-center gap-1.5 text-xs font-medium text-emerald-400 transition-colors hover:text-emerald-300"
               >
                 View Roadmap
                 <TrendingUp className="h-3 w-3" />
@@ -330,23 +330,23 @@ export default function DashboardClient() {
             <div className="space-y-2">
               <Link
                 href="/practice-log"
-                className="flex items-center gap-3 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2.5 text-sm text-white/70 transition-all hover:border-violet-500/20 hover:bg-violet-500/5 hover:text-white"
+                className="flex items-center gap-3 rounded-lg border border-white/5 bg-[#1a1a1a] px-3 py-2.5 text-sm text-white/70 transition-all hover:border-emerald-500/30 hover:bg-white/5 hover:text-white"
               >
-                <Star className="h-4 w-4 text-violet-400" />
+                <Star className="h-4 w-4 text-emerald-400" />
                 Log Practice Session
               </Link>
               <Link
                 href="/spaced-repetition"
-                className="flex items-center gap-3 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2.5 text-sm text-white/70 transition-all hover:border-violet-500/20 hover:bg-violet-500/5 hover:text-white"
+                className="flex items-center gap-3 rounded-lg border border-white/5 bg-[#1a1a1a] px-3 py-2.5 text-sm text-white/70 transition-all hover:border-emerald-500/30 hover:bg-white/5 hover:text-white"
               >
-                <RotateCcw className="h-4 w-4 text-violet-400" />
+                <RotateCcw className="h-4 w-4 text-emerald-400" />
                 Review Due Items
               </Link>
               <Link
                 href="/patterns"
-                className="flex items-center gap-3 rounded-lg border border-white/[0.06] bg-white/[0.02] px-3 py-2.5 text-sm text-white/70 transition-all hover:border-violet-500/20 hover:bg-violet-500/5 hover:text-white"
+                className="flex items-center gap-3 rounded-lg border border-white/5 bg-[#1a1a1a] px-3 py-2.5 text-sm text-white/70 transition-all hover:border-emerald-500/30 hover:bg-white/5 hover:text-white"
               >
-                <Target className="h-4 w-4 text-violet-400" />
+                <Target className="h-4 w-4 text-emerald-400" />
                 Study Patterns
               </Link>
             </div>
@@ -366,19 +366,19 @@ function DashboardSkeleton() {
       </div>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[1, 2, 3, 4].map((i) => (
-          <Skeleton key={i} className="h-[104px] rounded-xl border border-white/[0.06] bg-white/[0.02]" />
+          <Skeleton key={i} className="h-[104px] rounded-xl border border-white/5 bg-[#1a1a1a]" />
         ))}
       </div>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
-          <Skeleton className="h-[200px] rounded-xl border border-white/[0.06] bg-white/[0.02]" />
-          <Skeleton className="h-[200px] rounded-xl border border-white/[0.06] bg-white/[0.02]" />
-          <Skeleton className="h-[150px] rounded-xl border border-white/[0.06] bg-white/[0.02]" />
+          <Skeleton className="h-[200px] rounded-xl border border-white/5 bg-[#1a1a1a]" />
+          <Skeleton className="h-[200px] rounded-xl border border-white/5 bg-[#1a1a1a]" />
+          <Skeleton className="h-[150px] rounded-xl border border-white/5 bg-[#1a1a1a]" />
         </div>
         <div className="space-y-6">
-          <Skeleton className="h-[300px] rounded-xl border border-white/[0.06] bg-white/[0.02]" />
-          <Skeleton className="h-[250px] rounded-xl border border-white/[0.06] bg-white/[0.02]" />
-          <Skeleton className="h-[200px] rounded-xl border border-white/[0.06] bg-white/[0.02]" />
+          <Skeleton className="h-[300px] rounded-xl border border-white/5 bg-[#1a1a1a]" />
+          <Skeleton className="h-[250px] rounded-xl border border-white/5 bg-[#1a1a1a]" />
+          <Skeleton className="h-[200px] rounded-xl border border-white/5 bg-[#1a1a1a]" />
         </div>
       </div>
     </div>

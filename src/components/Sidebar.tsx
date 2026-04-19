@@ -40,18 +40,18 @@ export default function Sidebar() {
   return (
     <>
       <aside
-        className={`custom-scrollbar fixed left-0 top-0 z-40 flex h-full flex-col border-r border-white/[0.08] bg-[oklch(0.12_0.005_285)] transition-all duration-300 ${
+        className={`custom-scrollbar fixed left-0 top-0 z-40 flex h-full flex-col border-r border-white/5 bg-[#0a0a0a] transition-all duration-300 ${
           collapsed ? "w-[72px]" : "w-64"
         }`}
       >
         {/* Logo */}
-        <div className="flex h-16 items-center gap-3 border-b border-white/[0.08] px-4">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500 to-indigo-600">
-            <Zap className="h-5 w-5 text-white" />
+        <div className="flex h-16 items-center gap-3 border-b border-white/5 px-4">
+          <div className="flex p-1.5 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+            <Brain className="h-5 w-5 text-emerald-500" />
           </div>
           {!collapsed && (
             <div className="animate-fade-in overflow-hidden">
-              <h1 className="text-sm font-bold tracking-tight text-white">
+              <h1 className="text-sm font-bold tracking-tight text-white mb-[2px]">
                 LeetBug
               </h1>
             </div>
@@ -69,15 +69,15 @@ export default function Sidebar() {
                 href={item.href}
                 className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-200 ${
                   isActive
-                    ? "bg-violet-500/15 text-violet-300 shadow-sm shadow-violet-500/10"
-                    : "text-white/50 hover:bg-white/[0.05] hover:text-white/80"
+                    ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shadow-sm shadow-emerald-500/10"
+                    : "text-white/50 border border-transparent hover:bg-white/5 hover:text-white/80"
                 } ${collapsed ? "justify-center" : ""}`}
                 title={collapsed ? item.label : undefined}
               >
                 <item.icon
                   className={`h-[18px] w-[18px] shrink-0 transition-colors ${
                     isActive
-                      ? "text-violet-400"
+                      ? "text-emerald-400"
                       : "text-white/40 group-hover:text-white/70"
                   }`}
                 />
@@ -90,10 +90,10 @@ export default function Sidebar() {
         </nav>
 
         {/* Collapse toggle */}
-        <div className="border-t border-white/[0.08] p-3">
+        <div className="border-t border-white/5 p-3">
           <button
             onClick={() => setCollapsed(!collapsed)}
-            className="flex w-full items-center justify-center rounded-lg py-2 text-white/40 transition-colors hover:bg-white/[0.05] hover:text-white/70"
+            className="flex w-full items-center justify-center rounded-lg py-2 text-white/40 transition-colors border border-transparent hover:bg-white/5 hover:text-white/70"
           >
             {collapsed ? (
               <ChevronRight className="h-4 w-4" />

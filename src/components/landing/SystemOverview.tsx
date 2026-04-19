@@ -62,7 +62,7 @@ export default function SystemOverview() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
-              className={`group flex flex-col p-8 rounded-2xl bg-[#1a1a1a] border border-white/5 hover:border-emerald-500/30 hover:bg-white/[0.04] transition-all duration-300 ${pillar.colSpan}`}
+              className={`group flex flex-col p-8 rounded-2xl bg-[#1a1a1a] border border-white/5 hover:border-emerald-500/30 hover:bg-white/5 transition-all duration-300 ${pillar.colSpan}`}
             >
               <div className="flex items-center gap-4 mb-6">
                 <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 group-hover:scale-110 group-hover:bg-emerald-500/20 transition-all">

@@ -73,7 +73,7 @@ export default function ProblemCard({
               #{leetcodeNumber}
             </span>
             {dayInPlan && (
-              <span className="rounded bg-violet-500/10 px-1.5 py-0.5 text-[10px] font-medium text-violet-400">
+              <span className="rounded bg-emerald-500/10 px-1.5 py-0.5 text-[10px] font-medium text-emerald-400">
                 Day {dayInPlan}
               </span>
             )}
@@ -107,7 +107,7 @@ export default function ProblemCard({
           target="_blank"
           rel="noopener noreferrer"
           onClick={(e) => e.stopPropagation()}
-          className="flex items-center gap-1 text-xs text-violet-400 transition-colors hover:text-violet-300"
+          className="flex items-center gap-1 text-xs text-emerald-400 transition-colors hover:text-emerald-300"
         >
           <ExternalLink className="h-3 w-3" />
           Open on LeetCode

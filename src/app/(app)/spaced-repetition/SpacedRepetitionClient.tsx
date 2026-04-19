@@ -96,7 +96,7 @@ export default function SpacedRepetitionClient() {
 
       <div className="flex gap-1 rounded-xl bg-white/[0.03] p-1">
         <button onClick={() => setTab("active")}
-          className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-all ${tab === "active" ? "bg-violet-500/15 text-violet-300 shadow-sm" : "text-white/40 hover:text-white/60"}`}>
+          className={`flex flex-1 items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-medium transition-all ${tab === "active" ? "bg-emerald-500/15 text-emerald-300 shadow-sm" : "text-white/40 hover:text-white/60"}`}>
           <Clock className="h-4 w-4" />Active Queue ({active.length})
         </button>
         <button onClick={() => setTab("cleared")}
@@ -111,7 +111,7 @@ export default function SpacedRepetitionClient() {
             const daysUntil = getDaysUntil(item.resolveDate);
             const isDue = daysUntil !== null && daysUntil <= 0;
             return (
-              <div key={item.id} className={`glass-card flex items-center gap-4 ${isDue ? "!border-violet-500/20 animate-pulse-glow" : ""}`}>
+              <div key={item.id} className={`glass-card flex items-center gap-4 ${isDue ? "!border-emerald-500/20 animate-pulse-glow" : ""}`}>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="font-mono text-xs text-white/30">#{item.problem.leetcodeNumber}</span>
@@ -120,10 +120,10 @@ export default function SpacedRepetitionClient() {
                   <p className="mt-0.5 text-xs text-white/40">{item.problem.pattern.name} • First attempt: {new Date(item.firstAttemptDate).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</p>
                 </div>
                 <ConfidenceBadge level={item.firstResult} size="sm" />
-                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${isDue ? "bg-violet-500/15 text-violet-400" : "bg-white/[0.05] text-white/50"}`}>
+                <span className={`rounded-full px-3 py-1 text-xs font-semibold ${isDue ? "bg-emerald-500/15 text-emerald-400" : "bg-white/[0.05] text-white/50"}`}>
                   {daysUntil === null ? "No date" : isDue ? "Due now!" : `${daysUntil}d left`}
                 </span>
-                <button onClick={() => setSolvingItem(item)} className="flex h-9 w-9 items-center justify-center rounded-lg bg-violet-500/10 text-violet-400 transition-colors hover:bg-violet-500/20">
+                <button onClick={() => setSolvingItem(item)} className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400 transition-colors hover:bg-emerald-500/20">
                   <Play className="h-4 w-4 ml-0.5" />
                 </button>
               </div>
@@ -167,11 +167,11 @@ export default function SpacedRepetitionClient() {
                 <p className="text-sm text-white/50">{solvingItem.problem.pattern.name}</p>
                 <p className="text-xs text-white/30">No peeking at your old solution!</p>
               </div>
-              <Link href={solvingItem.problem.url} target="_blank" className="flex items-center gap-1.5 rounded-lg bg-violet-500/10 px-3 py-1.5 text-xs font-medium text-violet-400 transition-colors hover:bg-violet-500/20">
+              <Link href={solvingItem.problem.url} target="_blank" className="flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-400 transition-colors hover:bg-emerald-500/20">
                 <ExternalLink className="h-3 w-3" />Open on LeetCode
               </Link>
             </div>
-            <div className="flex justify-center rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
+            <div className="flex justify-center rounded-xl border border-white/5 bg-[#1a1a1a] p-6">
               <Timer initialMinutes={solvingItem.problem.difficulty === "EASY" ? 10 : 20} />
             </div>
             <div>
@@ -211,7 +211,7 @@ function SpacedRepetitionSkeleton() {
       </div>
       <div className="space-y-3">
         {[1, 2, 3, 4].map((i) => (
-          <Skeleton key={i} className="h-16 w-full rounded-xl border border-white/[0.06] bg-white/[0.02]" />
+          <Skeleton key={i} className="h-16 w-full rounded-xl border border-white/5 bg-[#1a1a1a]" />
         ))}
       </div>
     </div>

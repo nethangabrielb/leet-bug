@@ -116,7 +116,7 @@ export default function RoadmapClient() {
         <div key={week.week} className="space-y-3">
           {/* Week header */}
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-500/20 to-indigo-500/20 text-sm font-bold text-violet-400">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500/20 to-emerald-500/20 text-sm font-bold text-emerald-400">
               W{week.week}
             </div>
             <div>
@@ -147,7 +147,7 @@ export default function RoadmapClient() {
                         ? "border-cyan-500/20 bg-gradient-to-br from-cyan-500/5 to-blue-500/5 hover:border-cyan-500/40"
                         : isCompleted
                           ? "border-emerald-500/20 bg-emerald-500/5 hover:border-emerald-500/40"
-                          : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15] hover:bg-white/[0.04]"
+                          : "border-white/[0.08] bg-white/[0.02] hover:border-white/[0.15] hover:bg-white/5"
                       }`}
                   >
                     {/* Day number */}
@@ -156,7 +156,7 @@ export default function RoadmapClient() {
                         className={`text-xs font-bold uppercase tracking-wider ${isBoss
                           ? "text-amber-400"
                           : isReview
-                            ? "text-cyan-400"
+                            ? "text-emerald-400"
                             : isCompleted
                               ? "text-emerald-400"
                               : "text-white/40"
@@ -168,7 +168,7 @@ export default function RoadmapClient() {
                         <CheckCircle2 className="h-4 w-4 text-emerald-400" />
                       )}
                       {isBoss && <Swords className="h-4 w-4 text-amber-400" />}
-                      {isReview && <RotateCcw className="h-4 w-4 text-cyan-400" />}
+                      {isReview && <RotateCcw className="h-4 w-4 text-emerald-400" />}
                     </div>
 
                     {/* Content */}
@@ -253,7 +253,7 @@ export default function RoadmapClient() {
               <Link
                 href={selectedProblem.url}
                 target="_blank"
-                className="ml-auto flex items-center gap-1.5 rounded-lg bg-violet-500/10 px-3 py-1.5 text-xs font-medium text-violet-400 transition-colors hover:bg-violet-500/20"
+                className="ml-auto flex items-center gap-1.5 rounded-lg bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-400 transition-colors hover:bg-emerald-500/20"
               >
                 <ExternalLink className="h-3 w-3" />
                 Open on LeetCode
@@ -261,7 +261,7 @@ export default function RoadmapClient() {
             </div>
 
             {/* Timer */}
-            <div className="flex justify-center rounded-xl border border-white/[0.06] bg-white/[0.02] p-6">
+            <div className="flex justify-center rounded-xl border border-white/5 bg-[#1a1a1a] p-6">
               <Timer
                 initialMinutes={
                   selectedProblem.difficulty === "EASY" ? 20 : 35
