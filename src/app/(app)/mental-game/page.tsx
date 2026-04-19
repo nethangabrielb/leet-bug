@@ -1,4 +1,3 @@
-import AppLayout from "@/components/AppLayout";
 import {
   Brain,
   Wind,
@@ -19,7 +18,6 @@ const dontNeedData = [
 
 export default function MentalGamePage() {
   return (
-    <AppLayout>
       <div className="mx-auto max-w-4xl space-y-6 animate-fade-in">
         <div>
           <h1 className="text-3xl font-bold text-white">The Mental Game</h1>
@@ -187,6 +185,5 @@ export default function MentalGamePage() {
           </div>
         </div>
       </div>
-    </AppLayout>
   );
 }

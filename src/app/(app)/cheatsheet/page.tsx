@@ -1,4 +1,3 @@
-import AppLayout from "@/components/AppLayout";
 import CodeBlock from "@/components/CodeBlock";
 
 const sections = [
@@ -13,7 +12,6 @@ const sections = [
 
 export default function CheatsheetPage() {
   return (
-    <AppLayout>
       <div className="mx-auto max-w-4xl space-y-6 animate-fade-in">
         <div>
           <h1 className="text-3xl font-bold text-white">JS Cheatsheet</h1>
@@ -28,6 +26,5 @@ export default function CheatsheetPage() {
           ))}
         </div>
       </div>
-    </AppLayout>
   );
 }

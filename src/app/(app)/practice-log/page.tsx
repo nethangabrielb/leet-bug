@@ -1,5 +1,4 @@
 import { getPracticeLogs, getAllProblemsWithPatterns } from "@/actions/getProblems";
-import AppLayout from "@/components/AppLayout";
 import PracticeLogClient from "./PracticeLogClient";
 
 export default async function PracticeLogPage() {
@@ -9,8 +8,6 @@ export default async function PracticeLogPage() {
   ]);
 
   return (
-    <AppLayout>
       <PracticeLogClient logs={logs} problems={problems} />
-    </AppLayout>
   );
 }

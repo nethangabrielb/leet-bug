@@ -2,7 +2,6 @@ import prisma from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import AppLayout from "@/components/AppLayout";
 import Link from "next/link";
 
 export default async function PatternsPage() {
@@ -29,7 +28,6 @@ export default async function PatternsPage() {
   });
 
   return (
-    <AppLayout>
       <div className="mx-auto max-w-5xl space-y-6 animate-fade-in">
         <div>
           <h1 className="text-3xl font-bold text-white">Core Patterns</h1>
@@ -58,6 +56,5 @@ export default async function PatternsPage() {
           ))}
         </div>
       </div>
-    </AppLayout>
   );
 }

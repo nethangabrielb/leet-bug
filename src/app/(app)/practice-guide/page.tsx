@@ -1,4 +1,3 @@
-import AppLayout from "@/components/AppLayout";
 import CodeBlock from "@/components/CodeBlock";
 
 const progressionData = [
@@ -26,7 +25,6 @@ const progressionData = [
 
 export default function PracticeGuidePage() {
   return (
-    <AppLayout>
       <div className="mx-auto max-w-4xl space-y-6 animate-fade-in">
         <div>
           <h1 className="text-3xl font-bold text-white">Practice Guide</h1>
@@ -176,6 +174,5 @@ export default function PracticeGuidePage() {
           />
         </div>
       </div>
-    </AppLayout>
   );
 }

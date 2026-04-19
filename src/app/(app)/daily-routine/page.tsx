@@ -10,7 +10,6 @@ import {
   AlertTriangle,
 } from "lucide-react";
 
-import AppLayout from "@/components/AppLayout";
 import { checkInDaily, getTodayCheckIn } from "@/actions/checkInDaily";
 
 const blocks = [
@@ -142,7 +141,6 @@ export default function DailyRoutinePage() {
   const completedBlocks = Object.values(checkIn).filter(Boolean).length;
 
   return (
-    <AppLayout>
       <div className="mx-auto max-w-4xl space-y-6 animate-fade-in">
         <div className="flex items-center justify-between">
           <div>
@@ -296,6 +294,5 @@ export default function DailyRoutinePage() {
           </div>
         </div>
       </div>
-    </AppLayout>
   );
 }

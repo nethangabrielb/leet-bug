@@ -18,8 +18,6 @@ import {
   RotateCcw,
 } from "lucide-react";
 
-import AppLayout from "@/components/AppLayout";
-
 type NodeId =
   | "start"
   | "sorted"
@@ -244,7 +242,6 @@ export default function FlowchartPage() {
   };
 
   return (
-    <AppLayout>
       <div className="mx-auto max-w-4xl space-y-8 animate-fade-in">
         <div>
           <h1 className="text-3xl font-bold text-white">
@@ -414,6 +411,5 @@ export default function FlowchartPage() {
           </p>
         </div>
       </div>
-    </AppLayout>
   );
 }

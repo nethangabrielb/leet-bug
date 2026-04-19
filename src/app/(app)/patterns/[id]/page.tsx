@@ -4,7 +4,6 @@ import { headers } from "next/headers";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 
-import AppLayout from "@/components/AppLayout";
 import CodeBlock from "@/components/CodeBlock";
 import ConfidenceBadge from "@/components/ConfidenceBadge";
 import { ExternalLink, Star, ArrowLeft } from "lucide-react";
@@ -27,7 +26,6 @@ export default async function PatternDetailPage({ params }: { params: Promise<{ 
   if (!pattern) notFound();
 
   return (
-    <AppLayout>
       <div className="mx-auto max-w-4xl space-y-6 animate-fade-in">
         <Link href="/patterns" className="inline-flex items-center gap-1.5 text-sm text-white/40 transition-colors hover:text-white/70">
           <ArrowLeft className="h-3.5 w-3.5" />Back to Patterns
@@ -88,6 +86,5 @@ export default async function PatternDetailPage({ params }: { params: Promise<{ 
           </div>
         </div>
       </div>
-    </AppLayout>
   );
 }

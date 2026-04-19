@@ -3,7 +3,6 @@ import {
   getClearedRepetitions,
 } from "@/actions/manageRepetition";
 import { getAllProblemsWithPatterns } from "@/actions/getProblems";
-import AppLayout from "@/components/AppLayout";
 import SpacedRepetitionClient from "./SpacedRepetitionClient";
 
 export default async function SpacedRepetitionPage() {
@@ -14,12 +13,10 @@ export default async function SpacedRepetitionPage() {
   ]);
 
   return (
-    <AppLayout>
       <SpacedRepetitionClient
         active={active}
         cleared={cleared}
         problems={problems}
       />
-    </AppLayout>
   );
 }
