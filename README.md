@@ -2,14 +2,12 @@
 <!-- PROJECT LOGO / BANNER -->
 <!-- <img src="public/logo.svg" alt="LeetBug Logo" width="200" /> -->
 
-<p><em>A premium, interactive LeetCode training system providing structured pattern mastery, spaced repetition, and practice logging.</em></p>
+<h1>🐛 LeetBug</h1>
 
-<!-- BADGES -->
+<p><em>A structured 31-day LeetCode training system with spaced repetition, confidence tracking, and anti-panic interview prep — built for beginners who want a system, not a grind.</em></p>
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)
 [![Version](https://img.shields.io/badge/version-0.1.0-brightgreen.svg)]()
-![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)
-![Next.js](https://img.shields.io/badge/Next.js-16.x-black?logo=next.js&logoColor=white)
 ![PRs Welcome](https://img.shields.io/badge/PRs-welcome-orange.svg)
 
 <br />
@@ -20,320 +18,254 @@
 
 ---
 
+## The Problem With How Most People Learn LeetCode
+
+Most beginners open LeetCode, filter by "Easy," and start grinding. After two weeks they've solved 40 random problems, remember maybe 10, panic in interviews, and quit.
+
+**LeetBug doesn't let you do that.**
+
+It restricts what you study, enforces how you study it, schedules your reviews so you never forget, and trains the mental game that most resources completely ignore. It's not a problem list — it's a system.
+
+---
+
 ## Table of Contents
 
-- [Overview](#-overview)
+- [The 31-Day Roadmap](#-the-31-day-roadmap)
+- [The Traffic Light System](#-the-traffic-light-system)
+- [The Daily Routine](#-the-daily-routine)
+- [The Pattern Flowchart](#-the-pattern-flowchart)
+- [The Mental Game](#-the-mental-game)
+- [Spaced Repetition](#-spaced-repetition)
+- [What You Won't Study (And Why)](#-what-you-wont-study-and-why)
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
-- [Architecture](#-architecture)
 - [Getting Started](#-getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Environment Variables](#environment-variables)
-  - [Installation](#installation)
-  - [Running the App](#running-the-app)
-- [Database Schema](#-database-schema)
-- [Project Structure](#-project-structure)
 - [Roadmap](#-roadmap)
 - [Contributing](#-contributing)
 - [License](#-license)
-- [Acknowledgements](#-acknowledgements)
 - [Contact](#-contact)
 
 ---
 
-## Overview
+## 🧭 The 31-Day Roadmap
 
-> **LeetBug** is a full-stack web application built with Next.js 16, Prisma 7, and PostgreSQL. It provides an optimized, interactive 31-day plan to master core data structure and algorithmic patterns, utilizing active spaced repetition and structured daily logging to ensure durable learning rather than mindless grinding.
+LeetBug gives you a fixed, opinionated 5-week sequence designed to build pattern recognition in the right order — not alphabetically, not by difficulty, but chronologically by how concepts build on each other.
 
-<!-- Add screenshots here -->
-<!-- <img width="1901" height="1097" alt="screenshot" src="[url]" /> -->
+| Week | Theme | Topics |
+|------|-------|---------|
+| **Week 1** | Foundation | Math, Arrays, Hashing |
+| **Week 2** | Building Up | Strings, Two Pointers, Stacks |
+| **Week 3** | Leveling Up | Sliding Window, Binary Search, Sorting |
+| **Week 4** | Going Deep | Greedy, Linked Lists, Trees |
+| **Week 5** | Boss Battles 🔥 | Interview simulations under timed pressure |
 
-This project was built to:
-
-- **Stop Random Grinding** — Provide a focused, structured 31-day path to mastering 10 essential algorithmic patterns.
-- **Ensure Durable Learning** — Built-in spaced repetition queue prevents forgetting by resurfacing problems exactly when you need to review them.
-- **Showcase Modern Architecture** — Demonstrates a fast, server-rendered and highly interactive full-stack app leveraging Next.js 16 Server Actions, React Query cache invalidation, and type-safe data serialization.
-
----
-
-## Features
-
-### Core
-
-- [x] **Spaced Repetition Queue** — Algorithms automatically schedule reviews (🔴 3 days, 🟡 7 days) exactly when you're about to forget them.
-- [x] **Pattern Mastery Tracking** — Don't just solve problems blindly. See your true mastery levels across 10 core patterns dynamically rendered via heatmaps.
-- [x] **Daily Routine Consistency** — Track daily check-ins across 4 core practice blocks, build streaks, and stay motivated.
-- [x] **Interactive Pattern Flowchart** — A visual decision tree that helps you systematically identity which data structure or algorithm to tackle a problem with.
-- [ ] **Data Export** — Export all your logs and analytical history.
-
-### Technical
-
-- [x] **Server Actions & Mutations** — Uses Next.js Server Actions tightly integrated with TanStack Query for blazing fast cache invalidation without page reloads.
-- [x] **Top-Level Type Safety** — Strict validation at application boundaries using Zod coupled with Prisma generated types.
-- [x] **Optimized UX / UI** — Complete with Shadcn UI components, Sonner toaster notifications for immediate mutation feedback, TopLoader progress bars, and intelligent React Suspense skeletons.
+**Days 7, 14, 21, and 28 are hardcoded as Review Days.** You cannot advance to new material on these days — the app enforces it. Review only.
 
 ---
 
-## Tech Stack
+## 🔴🟡🟢 The Traffic Light System
 
-### Frontend
+Every problem you attempt gets rated. Your rating determines exactly what happens next.
 
-| Technology | Purpose |
+**🔴 Red — Couldn't Solve It**
+
+This is not failure. This is the most important state in the system.
+
+1. Read the solution fully
+2. Close the tab
+3. Rewrite it from scratch, purely from memory
+4. The problem is automatically queued for spaced repetition review in **3 days**
+
+**🟡 Yellow — Solved, But Struggled**
+
+You got it working but it wasn't clean.
+
+1. Write down the key insight that unlocked it
+2. Review the top 3 discussion solutions
+3. Problem is queued for review in **7 days**
+
+**🟢 Green — Clean Solve**
+
+You cracked it elegantly. No review needed unless it's a ⭐ core problem.
+
+> The rewrite-from-memory step on Red problems is non-negotiable. Reading a solution and understanding it are not the same thing. Rewriting proves you actually internalized it.
+
+---
+
+## ⏳ The Daily Routine
+
+To prevent burnout spirals, LeetBug enforces a strict 4-block daily structure with time limits. You don't get to grind for 4 hours and burn out by day 5.
+
+| Block | Duration | Purpose |
+|-------|----------|---------|
+| **Morning Warm-Up** | 15 min | Wake the brain up. No new learning. |
+| **Core Practice** | 35–50 min | Attack the day's roadmap module. Timers enforced: 20 min for Easys, 35 min for Mediums. |
+| **Spaced Repetition** | 15–20 min | Clear the Red/Yellow backlog. |
+| **Evening Reflection** | 10 min | Log your "Aha!" moments. |
+
+Total: ~75–95 minutes per day. Enough to make real progress. Not enough to destroy yourself.
+
+---
+
+## 🧠 The Pattern Flowchart
+
+A huge reason beginners freeze in interviews isn't lack of knowledge — it's not knowing which tool to reach for. LeetBug includes an interactive visual decision tree you click through based on problem cues:
+
+```
+Is it asking for a contiguous subarray?     → Sliding Window
+Does it involve matching or undoing?        → Stack
+Is it asking for minimum scheduling?        → Greedy or Tree
+Does it need fast lookups?                  → Hash Map
+Is the input sorted and you need O(log n)?  → Binary Search
+```
+
+Instead of guessing, you follow the flowchart. Over time, pattern identification becomes instinct.
+
+---
+
+## 🧘 The Mental Game
+
+Most apps teach you DSA. None of them teach you what to do when your mind goes blank 10 minutes into a 45-minute interview. LeetBug does.
+
+**Before you start:**
+- 3 slow breaths (in 4s, hold 4s, out 6s)
+- Verbalize: *"Let me read this carefully."*
+
+**When you're stuck:**
+- Test the problem out loud with `n = 1`
+- Do not touch the keyboard yet
+
+**The 2-Minute Warning:**
+At the halfway mark of your timer, if you don't have code yet — write the brute force. A working `O(n²)` answer always beats an unfinished `O(n)` answer.
+
+**Edge Case Checklist (always):**
+- Empty array `[]`
+- Single element `[x]`
+- Negative numbers
+- Zeros
+- Null inputs
+
+---
+
+## 🔁 Spaced Repetition
+
+LeetBug automatically manages a review queue based on your confidence ratings. Problems don't disappear after you solve them — they come back exactly when you're about to forget them.
+
+- 🔴 Red problems resurface in **3 days**
+- 🟡 Yellow problems resurface in **7 days**
+- 🟢 Green problems are retired (unless starred as core)
+
+The queue is the most important part of the system. Clearing it daily is non-negotiable.
+
+---
+
+## 🚫 What You Won't Study (And Why)
+
+LeetBug explicitly tells you to ignore the following — and blocks them from the roadmap entirely:
+
+| Topic | Why You're Skipping It |
+|-------|----------------------|
+| Dynamic Programming | Requires pattern fluency you don't have yet. A trap for beginners. |
+| Graph BFS/DFS | Complex, rarely appears in early-career assessments. |
+| Heaps / Priority Queues | Advanced. Not worth the cognitive load at this stage. |
+| Tries | Niche. Almost never tested at junior level. |
+| Hard problems | You don't need them. Mediums win junior interviews. |
+
+Knowing what to skip is as important as knowing what to study.
+
+---
+
+## ✅ Features
+
+- **31-Day Structured Roadmap** — Fixed weekly progression with enforced review days
+- **Traffic Light Confidence System** — Red/Yellow/Green ratings with enforced follow-up protocols
+- **Spaced Repetition Queue** — Automatic problem resurfacing at 3-day and 7-day intervals
+- **Interactive Pattern Flowchart** — Visual decision tree for approach identification
+- **4-Block Daily Routine Tracker** — Timed practice blocks with daily check-ins
+- **Mental Game Section** — Pre-exam rituals, stuck protocols, and edge case reminders
+- **Practice Logging** — Per-problem logs with key insights and confidence history
+- **Streak Tracking** — Daily consistency monitoring across all 4 blocks
+
+---
+
+## 🛠 Tech Stack
+
+| Technology | Role |
 |---|---|
-| [Next.js](https://nextjs.org/docs) | React meta-framework handling routing, build optimizations, and rendering |
-| [React](https://react.dev/) | Core UI library |
-| [Tailwind CSS](https://tailwindcss.com/) | Rapid, robust, utility-first styling and theme tokens |
-| [TanStack Query](https://tanstack.com/query/latest) | Asynchronous state management, client-side data fetching, caching, and invalidation |
-| [Shadcn UI](https://ui.shadcn.com/) | Accessible, beautifully designed primitive UI components |
-
-### Backend
-
-| Technology | Purpose |
-|---|---|
-| [Next.js Server Actions](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations) | Secure backend mutations invoked directly from client components |
-| [Better Auth](https://better-auth.com/) | Robust, standard-compliant authentication library offering email logic |
+| [Next.js 16](https://nextjs.org/) | Full-stack React framework (App Router, Server Actions, RSC) |
+| [React 19](https://react.dev/) | UI with Hooks and Suspense |
+| [Tailwind CSS](https://tailwindcss.com/) | Utility-first styling |
+| [shadcn/ui](https://ui.shadcn.com/) | Accessible primitive components |
+| [TanStack Query](https://tanstack.com/query) | Client-side caching and cache invalidation |
+| [Better Auth](https://better-auth.com/) | Email/password authentication |
+| [Prisma 7](https://www.prisma.io/) | Type-safe ORM |
+| [PostgreSQL](https://www.postgresql.org/) | Relational database |
 | [Zod](https://zod.dev/) | End-to-end schema validation |
 
-### Database & Infrastructure
-
-| Technology | Purpose |
-|---|---|
-| [PostgreSQL](https://www.postgresql.org/) | Core relational database |
-| [Prisma ORM](https://www.prisma.io/) | Type-safe database interactions and schema migrations |
-
 ---
 
-## Architecture
-
-### Project Structure
-
-```
-leetbug/
-├── prisma/
-│   ├── schema.prisma              # Database schema & generator overrides
-│   └── migrations/                # Incremental DB migrations
-├── public/                        # Static assets
-├── src/
-│   ├── app/
-│   │   ├── layout.tsx             # Root layout with Toast & Loader providers
-│   │   ├── page.tsx               # Landing / home page
-│   │   ├── globals.css            # Global styles
-│   │   ├── (app)/                 # Protected Application Routes
-│   │   │   ├── dashboard/         # Dashboard / Mastery Tracking
-│   │   │   ├── practice-log/      # Daily Practice Logging
-│   │   │   ├── spaced-repetition/ # Spaced Repetition Queue
-│   │   │   ├── patterns/          # Pattern Deep Dives
-│   │   │   └── flowchart/         # Pattern Identification Flowchart
-│   ├── actions/                   # Server Actions (database fetches & mutations)
-│   ├── components/                # Shared UI blocks (StatCards, Re-usable fragments)
-│   │   └── ui/                    # Base building blocks (Shadcn UI, Sonner, Skeleton)
-│   ├── lib/
-│   │   ├── auth-client.ts         # Better Auth client export
-│   │   ├── auth.ts                # Better Auth logic configuration
-│   │   ├── prisma.ts              # Global Prisma Client singleton
-│   │   └── utils.ts               # Shared Tailwind/Class merging utilities
-│   └── providers/                 # React Context wrapers (QueryProvider)
-├── tsconfig.json
-├── package.json
-```
-
-### Architecture Pattern
-
-> **Monolith (Next.js Full-Stack)** — A unified application architecture where Next.js serves both the highly interactive React 19 Frontend and secures Server Actions (Backend) operating against a PostgreSQL database. 
-
-### Data Flow Architecture
-
-```mermaid
-graph TD
-    A[Client UI Components] -->|TanStack React Query| B[Server Actions]
-    A -->|Form submissions| B
-    B -->|Prisma ORM| D[(PostgreSQL Database)]
-    A -->|Auth State| E[Better Auth Provider]
-    E -->|Session Context| D
-```
-
-### Request Flow
-
-```
-User Mutation → Client Event Handler
-    → React Query `useQuery` / `useMutation`
-        → Server Action (auth check, backend logic)
-        → Prisma Database Update
-    → React Query Cache Invalidation
-        → Automatic UI Component Re-render + Success Toast
-```
-
----
-
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
-Ensure you have the following installed:
-
-- **Node.js** `>= 18.x` — [Download](https://nodejs.org/)
-- **npm** `>= 9.x` / **pnpm** (preferred)
-- **PostgreSQL Database** — Local or managed (e.g. Supabase, Neon)
+- **Node.js** `>= 18.x`
+- **PostgreSQL** — local or managed (Supabase, Neon, etc.)
 
 ### Environment Variables
 
-Create a `.env` file in the root directory:
-
-```bash
-cp .env.example .env
-```
-*(If `.env.example` does not exist, simply create `.env`)*
+Create a `.env` file in the root:
 
 ```env
-# ─── Database ───────────────────────────────────────────
 DATABASE_URL="postgresql://user:password@localhost:5432/leetbug?schema=public"
-
-# ─── Authentication ─────────────────────────────────────
-BETTER_AUTH_SECRET="A_STRONG_RANDOM_SECRET_STRING_HERE"
+BETTER_AUTH_SECRET="a-strong-random-secret"
 ```
 
-> ⚠️ **Never commit your `.env` file.** It is already in `.gitignore`.
-
 ### Installation
-
-1. **Clone the repository**
 
 ```bash
 git clone https://github.com/nethangabrielb/leet-bug.git
 cd leet-bug
-```
-
-2. **Install dependencies**
-
-```bash
 pnpm install
-```
-
-3. **Generate the Prisma Client**
-
-```bash
 npx prisma generate
-```
-
-4. **Set up the database**
-
-```bash
-# Push schema to the database
-npx prisma db push
-
-# OR, run migrations
 npx prisma migrate dev
-```
-
-### Running the App
-
-**Development**:
-
-```bash
 pnpm dev
 ```
 
-**Production build**:
-
-```bash
-pnpm build
-pnpm start
-```
-
-The app will be available at: `http://localhost:3000`
+App runs at `http://localhost:3000`
 
 ---
 
-## Database Schema
-
-> Full schema: [`prisma/schema.prisma`](prisma/schema.prisma)
-
-### Entity Relationship Diagram
-
-```mermaid
-erDiagram
-    user ||--o{ PracticeLog : "has many"
-    user ||--o{ RepetitionItem : "has many"
-    user ||--o{ DailyCheckIn : "has many"
-    Pattern ||--o{ Problem : "groups"
-    Problem ||--o{ PracticeLog : "is logged in"
-    Problem ||--o{ RepetitionItem : "is queued in"
-
-    user {
-        string id PK
-        string email UK
-        string name
-        string password
-    }
-
-    Problem {
-        string id PK
-        int leetcodeNumber
-        string difficulty
-        string patternId FK
-    }
-
-    PracticeLog {
-        string id PK
-        string userId FK
-        string problemId FK
-        string solved
-        string confidence
-    }
-```
-
-### Core Models
-
-| Model | Key Fields | Description |
-|-------|-----------|-------------|
-| `user` | id, email, name, password | App accounts, powered by Better Auth |
-| `Pattern` | id, number, name | Standard 10 algorithmic patterns (Sliding Window, Trees, DFS, etc.) |
-| `Problem` | id, leetcodeNumber, patternId | Individual problem definitions tied to the 31-day roadmap |
-| `PracticeLog` | id, userId, problemId, confidence, keyInsight | Stores individual daily problem run logs linking users and problems |
-| `RepetitionItem` | id, userId, problemId, status, nextReviewDate | Queued problems users struggled on waiting for spaced review |
-| `DailyCheckIn` | id, block1Done, block2... | State of the 4-block daily task consistency routine |
-
----
-
-## Roadmap
+## 📋 Roadmap
 
 | Status | Feature |
 |--------|---------|
-| ✅ Done | 31-Day Roadmap Implementation |
-| ✅ Done | Practice Log Session Tracker |
-| ✅ Done | Backend Spaced Repetition Logic |
-| ✅ Done | Pattern Flowchart Interactive Layout |
-| ✅ Done | UI Performance Migrations (Suspense & React Query Loading) |
-| 📋 Planned | Daily Streak Extractor & History Board |
-| 💡 Considering | Dynamic Custom Roadmaps |
-
-See all open issues: [GitHub Issues →](https://github.com/nethangabrielb/leet-bug/issues)
+| ✅ Done | 31-Day Roadmap with enforced review days |
+| ✅ Done | Traffic Light confidence system |
+| ✅ Done | Spaced repetition queue (3-day / 7-day) |
+| ✅ Done | Interactive pattern identification flowchart |
+| ✅ Done | 4-Block daily routine tracker |
+| ✅ Done | Mental game section |
+| 📋 Planned | Daily streak history board |
+| 💡 Considering | Custom roadmap builder |
+| 💡 Considering | Community shared key insights |
 
 ---
 
 ## Contributing
 
-Contributions are what make open-source amazing. Any contributions are greatly appreciated.
-
 1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/your-feature-name`
-3. Commit your changes: `git commit -m 'feat: add some feature'`
-4. Push to your branch: `git push origin feature/your-feature-name`
+2. Create your branch: `git checkout -b feature/your-feature`
+3. Commit: `git commit -m 'feat: add something'`
+4. Push: `git push origin feature/your-feature`
 5. Open a Pull Request
+
+This project follows [Conventional Commits](https://www.conventionalcommits.org/).
 
 ---
 
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
-
----
-
-## Acknowledgements
-
-- [Shadcn UI](https://ui.shadcn.com/) — Beautiful primitive components
-- [Better Auth](https://better-auth.com/) — Flawless authentication out of the box
-- [Tailwind CSS](https://tailwindcss.com/) — Utility-first styling
+MIT. See `LICENSE` for details.
 
 ---
 
@@ -341,6 +273,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 **Nethan Gabriel**
 [![GitHub](https://img.shields.io/badge/GitHub-nethangabrielb-black?style=flat-square&logo=github)](https://github.com/nethangabrielb)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-nethangabrielb-0077B5?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/nethangabrielb/)
 
 ---
 
