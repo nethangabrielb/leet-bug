@@ -57,11 +57,11 @@ export default function SpacedRepetitionClient() {
   });
 
   const [tab, setTab] = useState<"active" | "cleared">("active");
+  const [solvingItem, setSolvingItem] = useState<RepItem | null>(null);
 
   if (isLoadingActive || isLoadingCleared || isLoadingProblems || !active || !cleared || !problems) {
     return <SpacedRepetitionSkeleton />;
   }
-  const [solvingItem, setSolvingItem] = useState<RepItem | null>(null);
   const now = new Date();
 
   const handleResult = async (repId: string, result: "RED" | "YELLOW" | "GREEN") => {
