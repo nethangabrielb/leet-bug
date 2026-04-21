@@ -179,7 +179,7 @@ export default function SpacedRepetitionClient() {
               <div className="flex gap-3">
                 {([
                   { key: "RED" as const, emoji: "🔴", label: "Still struggling", sub: "→ +3 days" },
-                  { key: "YELLOW" as const, emoji: "🟡", label: "Getting closer", sub: "→ +4 days" },
+                  { key: "YELLOW" as const, emoji: "🟡", label: "Getting closer", sub: "→ +7 days" },
                   { key: "GREEN" as const, emoji: "🟢", label: "Clean solve!", sub: "→ Cleared ✅" },
                 ]).map((opt) => (
                   <button key={opt.key} onClick={() => handleResult(solvingItem.id, opt.key)}

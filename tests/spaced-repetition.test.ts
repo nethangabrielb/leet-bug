@@ -49,9 +49,9 @@ describe("Spaced Repetition Logic", () => {
     expect(diff).toBe(3);
   });
 
-  it("should add a YELLOW problem with +4 day resolve", async () => {
+  it("should add a YELLOW problem with +7 day resolve", async () => {
     const now = new Date();
-    const resolve = new Date(now); resolve.setDate(resolve.getDate() + 4);
+    const resolve = new Date(now); resolve.setDate(resolve.getDate() + 7);
     const item = await prisma.repetitionItem.create({
       data: {
         userId: SR_USER_ID, problemId: yellowProblem.id,
@@ -60,7 +60,7 @@ describe("Spaced Repetition Logic", () => {
     });
     expect(item.firstResult).toBe("YELLOW");
     const diff = Math.round((item.resolveDate!.getTime() - now.getTime()) / 86400000);
-    expect(diff).toBe(4);
+    expect(diff).toBe(7);
   });
 
   it("should retrieve active items with problem joins", async () => {

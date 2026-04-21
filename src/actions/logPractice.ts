@@ -75,7 +75,7 @@ export async function logPractice(data: {
 
   // If confidence is RED or YELLOW, auto-create a spaced repetition entry
   if (data.confidence === "RED" || data.confidence === "YELLOW") {
-    const daysToAdd = data.confidence === "RED" ? 3 : 4;
+    const daysToAdd = data.confidence === "RED" ? 3 : 7;
     const resolveDate = new Date();
     resolveDate.setDate(resolveDate.getDate() + daysToAdd);
 

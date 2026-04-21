@@ -16,7 +16,7 @@ export async function addToRepetitionQueue(data: {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) redirect("/login");
 
-  const daysToAdd = data.firstResult === "RED" ? 3 : 4;
+  const daysToAdd = data.firstResult === "RED" ? 3 : 7;
   const resolveDate = new Date();
   resolveDate.setDate(resolveDate.getDate() + daysToAdd);
 
@@ -52,7 +52,7 @@ export async function updateRepetitionResult(data: {
   }
 
   // Schedule next resolve
-  const daysToAdd = data.result === "RED" ? 3 : 4;
+  const daysToAdd = data.result === "RED" ? 3 : 7;
   const nextResolveDate = new Date();
   nextResolveDate.setDate(nextResolveDate.getDate() + daysToAdd);
 
