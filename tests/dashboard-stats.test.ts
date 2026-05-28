@@ -58,9 +58,17 @@ describe("Dashboard Stats Logic", () => {
     });
     const dates = [...new Set(logs.map((l) => l.date.toISOString().split("T")[0]))].sort((a, b) => b.localeCompare(a));
     let streak = 0;
-    const check = new Date(); check.setHours(0, 0, 0, 0);
+    const check = new Date();
+    const checkStr = check.toISOString().split("T")[0];
+    const checkDate = new Date(checkStr + "T00:00:00.000Z");
     for (const d of dates) {
-      if (d === check.toISOString().split("T")[0]) { streak++; check.setDate(check.getDate() - 1); } else break;
+      const currentCheckStr = checkDate.toISOString().split("T")[0];
+      if (d === currentCheckStr) {
+        streak++;
+        checkDate.setUTCDate(checkDate.getUTCDate() - 1);
+      } else {
+        break;
+      }
     }
     expect(streak).toBeGreaterThanOrEqual(1);
   });

@@ -97,40 +97,73 @@ export async function getDashboardStats(tzOffset?: number) {
     confidenceCounts[log.confidence]++;
   }
 
-  // Streak calculation (consecutive dates in the user's local time)
-  // Shift each log date by the offset so the UTC date string matches local calendar days.
+  // Streak calculation (consecutive dates in the user's local time - Asia/Manila)
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Manila",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+
   const logDates = [
     ...new Set(
       logs.map((l) => {
         const d = l.date instanceof Date ? l.date : new Date(l.date as string);
-        return new Date(d.getTime() + offsetMs).toISOString().split("T")[0];
+        return formatter.format(d);
       })
     ),
   ].sort((a, b) => b.localeCompare(a));
 
-  let streak = 0;
-  const checkDate = new Date(today);
+  const localTodayStr = formatter.format(new Date());
+  const localYesterdayStr = formatter.format(new Date(Date.now() - 86400000));
 
-  for (const dateStr of logDates) {
-    const checkStr = checkDate.toISOString().split("T")[0];
-    if (dateStr === checkStr) {
-      streak++;
-      checkDate.setDate(checkDate.getDate() - 1);
-    } else if (dateStr < checkStr) {
-      break;
+  let streak = 0;
+  if (logDates.length > 0) {
+    const mostRecentLogStr = logDates[0];
+    if (mostRecentLogStr === localTodayStr || mostRecentLogStr === localYesterdayStr) {
+      let checkDate = new Date(mostRecentLogStr);
+      for (const dateStr of logDates) {
+        const checkStr = formatter.format(checkDate);
+        if (dateStr === checkStr) {
+          streak++;
+          checkDate.setDate(checkDate.getDate() - 1);
+        } else {
+          break;
+        }
+      }
     }
   }
 
   // Count passed review days correctly into the progress tally
   // Use the log's day field if set, otherwise fall back to the problem's dayInPlan
   const rawUniqueDays = new Set(
-    logs.map((l) => l.day ?? l.problem.dayInPlan).filter(Boolean)
+    logs.map((l) => l.day ?? l.problem?.dayInPlan).filter(Boolean)
   );
   const passedReviewDays = user?.passedReviewDays || [];
   
   // Total completed days equals unique practiced days PLUS passed review days
   const completedDaysSet = new Set([...rawUniqueDays, ...passedReviewDays]);
   const daysCompleted = completedDaysSet.size;
+
+  // Prompt 2 & 3 Debug Logging
+  console.log("=== DEBUG DAYS COMPLETED ===");
+  console.log("User ID:", userId);
+  console.log("Passed Review Days:", passedReviewDays);
+  console.log("Raw logs in DB:", logs.map(l => ({ problemId: l.problemId, day: l.day, problemDay: l.problem?.dayInPlan, date: l.date })));
+  console.log("Raw Unique Days:", Array.from(rawUniqueDays));
+  console.log("Completed Days Set:", Array.from(completedDaysSet));
+  console.log("============================");
+
+  const weekEnd = new Date(weekStart.getTime() + 7 * 24 * 60 * 60 * 1000);
+  console.log("=== DEBUG WEEKLY PROGRESS ===");
+  console.log("weekStart (UTC/Local):", weekStart.toISOString(), "/", weekStart.toString());
+  console.log("weekEnd (UTC/Local):", weekEnd.toISOString(), "/", weekEnd.toString());
+  for (const l of logs) {
+    const isGte = l.date >= weekStart;
+    console.log(`Log Date: ${l.date.toISOString()} | problemId: ${l.problemId} | isGte: ${isGte}`);
+  }
+  console.log("weekLogs count query result:", weekLogs);
+  console.log("=============================");
 
   // Today's problems from 31-day plan
   const nextDay =

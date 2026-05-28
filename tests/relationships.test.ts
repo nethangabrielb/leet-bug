@@ -1,8 +1,16 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import { prisma, ensureTestUser, cleanupTestUser } from "./setup";
 
-beforeAll(async () => { await ensureTestUser(); });
-afterAll(async () => { await cleanupTestUser(); });
+beforeAll(async () => {
+  await ensureTestUser();
+  const tempId = "temp-flow-test-user";
+  await prisma.repetitionItem.deleteMany({ where: { userId: tempId } });
+  await prisma.practiceLog.deleteMany({ where: { userId: tempId } });
+  await prisma.user.deleteMany({ where: { id: tempId } });
+});
+afterAll(async () => {
+  await cleanupTestUser();
+});
 
 describe("Data Relationships & Query Patterns", () => {
   it("should query problems with pattern joins", async () => {
