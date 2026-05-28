@@ -31,7 +31,7 @@ export async function logPractice(data: {
 
   const logsPromise = prisma.practiceLog.findMany({
     where: { userId },
-    select: { day: true },
+    select: { day: true, problem: { select: { dayInPlan: true } } },
   });
 
   const dueTodayPromise = prisma.repetitionItem.count({
@@ -44,7 +44,9 @@ export async function logPractice(data: {
 
   const [user, logs, dueToday] = await Promise.all([userPromise, logsPromise, dueTodayPromise]);
 
-  const rawUniqueDays = new Set(logs.map((l) => l.day).filter(Boolean));
+  const rawUniqueDays = new Set(
+    logs.map((l) => l.day ?? l.problem.dayInPlan).filter(Boolean)
+  );
   const passedReviewDays = user?.passedReviewDays || [];
   
   const completedDaysSet = new Set([...rawUniqueDays, ...passedReviewDays]);

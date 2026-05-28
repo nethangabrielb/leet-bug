@@ -56,7 +56,7 @@ export default function DashboardClient() {
 
   const { data: stats, isLoading, error } = useQuery({
     queryKey: ["dashboardStats"],
-    queryFn: () => getDashboardStats(),
+    queryFn: () => getDashboardStats(new Date().getTimezoneOffset()),
   });
 
   if (error) throw error;

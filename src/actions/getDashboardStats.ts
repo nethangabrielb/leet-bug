@@ -6,12 +6,21 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import prisma from "@/lib/prisma";
 
-export async function getDashboardStats() {
+export async function getDashboardStats(tzOffset?: number) {
   const session = await auth.api.getSession({ headers: await headers() });
   if (!session) redirect("/login");
 
   const userId = session.user.id;
-  const now = new Date();
+
+  // Compute "now" in the user's local timezone.
+  // tzOffset is minutes BEHIND UTC (e.g. UTC+8 → -480).
+  // If not provided, fall back to the server's local time.
+  const serverNow = new Date();
+  const offsetMs =
+    tzOffset != null
+      ? (serverNow.getTimezoneOffset() - tzOffset) * 60_000
+      : 0;
+  const now = new Date(serverNow.getTime() + offsetMs);
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
   // Fire independent queries concurrently
@@ -22,7 +31,13 @@ export async function getDashboardStats() {
 
   const logsPromise = prisma.practiceLog.findMany({
     where: { userId },
-    select: { day: true, date: true, confidence: true, problemId: true },
+    select: {
+      day: true,
+      date: true,
+      confidence: true,
+      problemId: true,
+      problem: { select: { dayInPlan: true } },
+    },
     orderBy: { date: "desc" },
   });
 
@@ -34,9 +49,11 @@ export async function getDashboardStats() {
     },
   });
 
-  const dayOfWeek = now.getDay();
+  // Week starts on Monday to match the UI labels (Mon–Sun).
+  // getDay(): 0=Sun,1=Mon,...,6=Sat → days since Monday = (day + 6) % 7
+  const daysSinceMonday = (now.getDay() + 6) % 7;
   const weekStart = new Date(today);
-  weekStart.setDate(weekStart.getDate() - dayOfWeek);
+  weekStart.setDate(weekStart.getDate() - daysSinceMonday);
 
   const weekLogsPromise = prisma.practiceLog.count({
     where: {
@@ -52,6 +69,10 @@ export async function getDashboardStats() {
           practiceLogs: {
             where: { userId },
             orderBy: { date: "desc" },
+            take: 1,
+          },
+          repetitionItems: {
+            where: { userId, status: "CLEARED" },
             take: 1,
           },
         },
@@ -76,12 +97,13 @@ export async function getDashboardStats() {
     confidenceCounts[log.confidence]++;
   }
 
-  // Streak calculation (consecutive dates)
+  // Streak calculation (consecutive dates in the user's local time)
+  // Shift each log date by the offset so the UTC date string matches local calendar days.
   const logDates = [
     ...new Set(
       logs.map((l) => {
-        if (l.date instanceof Date) return l.date.toISOString().split("T")[0];
-        return new Date(l.date as string).toISOString().split("T")[0];
+        const d = l.date instanceof Date ? l.date : new Date(l.date as string);
+        return new Date(d.getTime() + offsetMs).toISOString().split("T")[0];
       })
     ),
   ].sort((a, b) => b.localeCompare(a));
@@ -100,10 +122,13 @@ export async function getDashboardStats() {
   }
 
   // Count passed review days correctly into the progress tally
-  const rawUniqueDays = new Set(logs.map((l) => l.day).filter(Boolean));
+  // Use the log's day field if set, otherwise fall back to the problem's dayInPlan
+  const rawUniqueDays = new Set(
+    logs.map((l) => l.day ?? l.problem.dayInPlan).filter(Boolean)
+  );
   const passedReviewDays = user?.passedReviewDays || [];
   
-  // Total completed days equals unique parsed log days PLUS passed review days
+  // Total completed days equals unique practiced days PLUS passed review days
   const completedDaysSet = new Set([...rawUniqueDays, ...passedReviewDays]);
   const daysCompleted = completedDaysSet.size;
 
@@ -129,8 +154,9 @@ export async function getDashboardStats() {
     ).length;
     const greenCount = p.problems.filter(
       (prob) =>
-        prob.practiceLogs.length > 0 &&
-        prob.practiceLogs[0].confidence === "GREEN"
+        (prob.practiceLogs.length > 0 &&
+          prob.practiceLogs[0].confidence === "GREEN") ||
+        prob.repetitionItems.length > 0
     ).length;
 
     return {
