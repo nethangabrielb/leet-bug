@@ -52,7 +52,13 @@ export async function logPractice(data: {
   const completedDaysSet = new Set([...rawUniqueDays, ...passedReviewDays]);
   const daysCompleted = completedDaysSet.size;
 
-  const nextDay = daysCompleted < 31 ? daysCompleted + 1 : 31;
+  let nextDay = 31;
+  for (let d = 1; d <= 31; d++) {
+    if (!completedDaysSet.has(d)) {
+      nextDay = d;
+      break;
+    }
+  }
   const reviewDays = [7, 14, 21, 28];
   const isReviewDayBlocked = reviewDays.includes(nextDay) && dueToday > 0;
 

@@ -165,11 +165,14 @@ export async function getDashboardStats(tzOffset?: number) {
   console.log("weekLogs count query result:", weekLogs);
   console.log("=============================");
 
-  // Today's problems from 31-day plan
-  const nextDay =
-    daysCompleted < 31
-      ? daysCompleted + 1
-      : 31;
+  // Find the first uncompleted day in the 31-day sequence (self-healing for skipped days)
+  let nextDay = 31;
+  for (let d = 1; d <= 31; d++) {
+    if (!completedDaysSet.has(d)) {
+      nextDay = d;
+      break;
+    }
+  }
 
   const reviewDays = [7, 14, 21, 28];
   const isReviewDay = reviewDays.includes(nextDay);
