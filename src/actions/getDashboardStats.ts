@@ -137,33 +137,26 @@ export async function getDashboardStats(tzOffset?: number) {
   // Count passed review days correctly into the progress tally
   // Use the log's day field if set, otherwise fall back to the problem's dayInPlan
   const rawUniqueDays = new Set(
-    logs.map((l) => l.day ?? l.problem?.dayInPlan).filter(Boolean)
+    logs.map((l) => l.day ?? l.problem?.dayInPlan).filter((d): d is number => d != null)
   );
   const passedReviewDays = user?.passedReviewDays || [];
   
   // Total completed days equals unique practiced days PLUS passed review days
   const completedDaysSet = new Set([...rawUniqueDays, ...passedReviewDays]);
-  const daysCompleted = completedDaysSet.size;
 
-  // Prompt 2 & 3 Debug Logging
-  console.log("=== DEBUG DAYS COMPLETED ===");
-  console.log("User ID:", userId);
-  console.log("Passed Review Days:", passedReviewDays);
-  console.log("Raw logs in DB:", logs.map(l => ({ problemId: l.problemId, day: l.day, problemDay: l.problem?.dayInPlan, date: l.date })));
-  console.log("Raw Unique Days:", Array.from(rawUniqueDays));
-  console.log("Completed Days Set:", Array.from(completedDaysSet));
-  console.log("============================");
-
-  const weekEnd = new Date(weekStart.getTime() + 7 * 24 * 60 * 60 * 1000);
-  console.log("=== DEBUG WEEKLY PROGRESS ===");
-  console.log("weekStart (UTC/Local):", weekStart.toISOString(), "/", weekStart.toString());
-  console.log("weekEnd (UTC/Local):", weekEnd.toISOString(), "/", weekEnd.toString());
-  for (const l of logs) {
-    const isGte = l.date >= weekStart;
-    console.log(`Log Date: ${l.date.toISOString()} | problemId: ${l.problemId} | isGte: ${isGte}`);
+  // Auto-heal: if the user has completed any day AFTER a review day,
+  // that review day is implicitly passed (they couldn't have gotten there
+  // without going through it). This prevents the "first gap" scanner from
+  // getting stuck on review days that were never explicitly marked.
+  const reviewDays = [7, 14, 21, 28];
+  const highestCompletedDay = Math.max(0, ...completedDaysSet);
+  for (const rd of reviewDays) {
+    if (rd < highestCompletedDay && !completedDaysSet.has(rd)) {
+      completedDaysSet.add(rd);
+    }
   }
-  console.log("weekLogs count query result:", weekLogs);
-  console.log("=============================");
+
+  const daysCompleted = completedDaysSet.size;
 
   // Find the first uncompleted day in the 31-day sequence (self-healing for skipped days)
   let nextDay = 31;
@@ -174,7 +167,6 @@ export async function getDashboardStats(tzOffset?: number) {
     }
   }
 
-  const reviewDays = [7, 14, 21, 28];
   const isReviewDay = reviewDays.includes(nextDay);
   const isReviewDayBlocked = isReviewDay && dueToday > 0;
 

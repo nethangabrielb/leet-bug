@@ -45,11 +45,22 @@ export async function logPractice(data: {
   const [user, logs, dueToday] = await Promise.all([userPromise, logsPromise, dueTodayPromise]);
 
   const rawUniqueDays = new Set(
-    logs.map((l) => l.day ?? l.problem.dayInPlan).filter(Boolean)
+    logs.map((l) => l.day ?? l.problem.dayInPlan).filter((d): d is number => d != null)
   );
   const passedReviewDays = user?.passedReviewDays || [];
   
   const completedDaysSet = new Set([...rawUniqueDays, ...passedReviewDays]);
+
+  // Auto-heal: if the user has completed any day AFTER a review day,
+  // that review day is implicitly passed.
+  const reviewDays = [7, 14, 21, 28];
+  const highestCompletedDay = Math.max(0, ...completedDaysSet);
+  for (const rd of reviewDays) {
+    if (rd < highestCompletedDay && !completedDaysSet.has(rd)) {
+      completedDaysSet.add(rd);
+    }
+  }
+
   const daysCompleted = completedDaysSet.size;
 
   let nextDay = 31;
@@ -59,7 +70,6 @@ export async function logPractice(data: {
       break;
     }
   }
-  const reviewDays = [7, 14, 21, 28];
   const isReviewDayBlocked = reviewDays.includes(nextDay) && dueToday > 0;
 
   if (isReviewDayBlocked) {
